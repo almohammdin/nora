@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#113a5c">
+  <title>مساحة الباحثة نورة المحمدي | القيادة والسياسات التعليمية</title>
+  <meta name="description" content="مساحة عمل عربية تساعد طالبة الماجستير على تنظيم خطة البحث، ومصفوفة الدراسات السابقة، والمهام، وسجل القرارات، والاستفادة العملية من GitHub.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%23113a5c'/%3E%3Cpath d='M17 45V20h14c8 0 13 4 13 11 0 5-3 9-8 10l10 4v4H35l-9-7v7zM25 27v9h6c3 0 5-2 5-5s-2-4-5-4z' fill='%23fff'/%3E%3C/svg%3E">
+  <style>
+    :root {
+      --navy: #113a5c;
+      --navy-2: #0d2d47;
+      --blue: #1f668a;
+      --teal: #1f8a83;
+      --gold: #c59a46;
+      --ink: #182533;
+      --muted: #657483;
+      --line: #dce5eb;
+      --soft: #f3f7f9;
+      --white: #ffffff;
+      --success: #16805f;
+      --warn: #a86516;
+      --danger: #a13f47;
+      --shadow: 0 18px 55px rgba(17, 58, 92, .10);
+      --radius: 22px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: #eef3f6;
+      color: var(--ink);
+      font-family: "Tahoma", "Arial", sans-serif;
+      line-height: 1.8;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    button, input, textarea, select { font: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    a { color: inherit; }
+
+    .topbar {
+      background: var(--navy-2);
+      color: rgba(255,255,255,.82);
+      font-size: 13px;
+    }
+    .topbar-inner {
+      width: min(1180px, calc(100% - 32px));
+      margin: auto;
+      padding: 8px 0;
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+    }
+    .topbar strong { color: #fff; }
+
+    header {
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 15% 5%, rgba(31,138,131,.24), transparent 30%),
+        radial-gradient(circle at 92% 15%, rgba(197,154,70,.18), transparent 25%),
+        linear-gradient(135deg, #113a5c 0%, #174f72 58%, #1a6a78 100%);
+      color: #fff;
+    }
+    header::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+      background-size: 40px 40px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,.7), transparent);
+      pointer-events: none;
+    }
+    .hero {
+      width: min(1180px, calc(100% - 32px));
+      margin: auto;
+      padding: 64px 0 58px;
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1.25fr .75fr;
+      align-items: center;
+      gap: 36px;
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 11px;
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.22);
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 18px;
+    }
+    h1 {
+      font-size: clamp(34px, 5vw, 58px);
+      line-height: 1.25;
+      margin: 0 0 15px;
+      letter-spacing: -.6px;
+    }
+    .hero p {
+      margin: 0;
+      color: rgba(255,255,255,.84);
+      font-size: clamp(16px, 2vw, 19px);
+      max-width: 760px;
+    }
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 25px;
+    }
+    .btn {
+      border: 0;
+      border-radius: 12px;
+      padding: 11px 16px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      font-weight: 700;
+      transition: .2s ease;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn-primary { background: #fff; color: var(--navy); }
+    .btn-ghost { background: rgba(255,255,255,.1); color: #fff; border: 1px solid rgba(255,255,255,.24); }
+    .btn-dark { background: var(--navy); color: #fff; }
+    .btn-soft { background: #eaf1f5; color: var(--navy); }
+    .btn-outline { background: transparent; color: var(--navy); border: 1px solid #bccbd4; }
+    .btn-danger { background: #fff0f1; color: var(--danger); border: 1px solid #edc8cc; }
+    .btn-small { padding: 8px 11px; border-radius: 10px; font-size: 13px; }
+
+    .hero-card {
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.2);
+      border-radius: 22px;
+      padding: 22px;
+      backdrop-filter: blur(8px);
+    }
+    .hero-card h2 { margin: 0 0 14px; font-size: 18px; }
+    .hero-stat-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .hero-stat {
+      background: rgba(255,255,255,.1);
+      border-radius: 14px;
+      padding: 13px;
+    }
+    .hero-stat strong { display: block; font-size: 24px; line-height: 1.2; }
+    .hero-stat span { color: rgba(255,255,255,.73); font-size: 12px; }
+
+    .sticky-nav-wrap {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(238,243,246,.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(17,58,92,.08);
+    }
+    .sticky-nav {
+      width: min(1180px, calc(100% - 24px));
+      margin: auto;
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      padding: 10px 0;
+    }
+    .sticky-nav::-webkit-scrollbar { display: none; }
+    .nav-pill {
+      white-space: nowrap;
+      border: 1px solid #d6e0e6;
+      background: #fff;
+      color: #40515f;
+      border-radius: 999px;
+      padding: 8px 13px;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .nav-pill:hover { border-color: var(--blue); color: var(--navy); }
+
+    main {
+      width: min(1180px, calc(100% - 32px));
+      margin: 28px auto 60px;
+    }
+    section { scroll-margin-top: 74px; margin-bottom: 28px; }
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 15px;
+    }
+    .section-head h2 { margin: 0; font-size: clamp(23px, 3vw, 31px); color: var(--navy); }
+    .section-head p { margin: 3px 0 0; color: var(--muted); max-width: 760px; }
+
+    .panel {
+      background: #fff;
+      border: 1px solid #dfe7ec;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 23px;
+    }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 17px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 15px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 13px; }
+
+    .field { display: flex; flex-direction: column; gap: 7px; }
+    .field label { font-size: 13px; font-weight: 700; color: #374956; }
+    .field small { color: var(--muted); font-size: 12px; }
+    input, textarea, select {
+      width: 100%;
+      border: 1px solid #cfdbe2;
+      border-radius: 11px;
+      padding: 10px 12px;
+      background: #fff;
+      color: var(--ink);
+      outline: 0;
+      transition: .2s;
+    }
+    input:focus, textarea:focus, select:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(31,102,138,.1); }
+    textarea { min-height: 100px; resize: vertical; }
+
+    .research-summary {
+      display: grid;
+      grid-template-columns: 1.25fr .75fr;
+      gap: 18px;
+    }
+    .summary-side {
+      background: var(--soft);
+      border: 1px solid var(--line);
+      border-radius: 17px;
+      padding: 17px;
+    }
+    .summary-side h3 { margin: 0 0 8px; color: var(--navy); }
+    .progress-track { height: 11px; background: #dbe6ec; border-radius: 999px; overflow: hidden; margin: 10px 0 8px; }
+    .progress-bar { height: 100%; width: 0; background: linear-gradient(90deg, var(--teal), var(--blue)); transition: width .3s ease; }
+    .progress-line { display: flex; justify-content: space-between; color: var(--muted); font-size: 12px; }
+    .quick-list { margin: 14px 0 0; padding: 0; list-style: none; display: grid; gap: 9px; }
+    .quick-list li { display: flex; gap: 9px; align-items: flex-start; font-size: 13px; color: #455764; }
+    .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--gold); margin-top: 8px; flex: 0 0 auto; }
+
+    .stage-list { display: grid; gap: 11px; }
+    .stage-item {
+      display: grid;
+      grid-template-columns: 34px 1fr 150px 42px;
+      align-items: center;
+      gap: 12px;
+      border: 1px solid #dae4ea;
+      background: #fbfcfd;
+      padding: 11px;
+      border-radius: 14px;
+    }
+    .stage-item.done { background: #f2fbf7; border-color: #bfe2d4; }
+    .stage-index {
+      width: 31px;
+      height: 31px;
+      border-radius: 10px;
+      background: #e9f0f4;
+      color: var(--navy);
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 13px;
+    }
+    .stage-title { font-weight: 800; color: #263946; }
+    .stage-desc { font-size: 12px; color: var(--muted); }
+    .check-button {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      border: 1px solid #c7d6de;
+      background: #fff;
+      cursor: pointer;
+      font-weight: 900;
+      color: transparent;
+    }
+    .stage-item.done .check-button { color: #fff; background: var(--success); border-color: var(--success); }
+
+    .notice {
+      border-radius: 16px;
+      padding: 15px 17px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    .notice strong { display: block; margin-bottom: 2px; }
+    .notice-info { background: #edf6fa; border: 1px solid #c6e1ec; color: #274c60; }
+    .notice-warn { background: #fff8e9; border: 1px solid #ead6a8; color: #684c1e; }
+    .notice-icon { font-size: 20px; line-height: 1.4; }
+
+    .matrix-toolbar, .task-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 13px;
+    }
+    .toolbar-group { display: flex; flex-wrap: wrap; gap: 8px; }
+    .counter { font-size: 13px; color: var(--muted); }
+
+    .table-wrap {
+      overflow: auto;
+      border: 1px solid #dce5ea;
+      border-radius: 15px;
+      background: #fff;
+    }
+    table { border-collapse: separate; border-spacing: 0; width: 100%; min-width: 1240px; }
+    th, td { border-bottom: 1px solid #e4ebef; border-left: 1px solid #eef2f4; padding: 9px; vertical-align: top; text-align: right; }
+    th { background: #f2f6f8; color: #304552; font-size: 12px; position: sticky; top: 0; z-index: 1; }
+    td { background: #fff; }
+    tbody tr:last-child td { border-bottom: 0; }
+    td input, td textarea, td select { min-width: 120px; padding: 7px 8px; border-radius: 8px; font-size: 12px; }
+    td textarea { min-height: 64px; }
+    .row-actions { display: flex; gap: 6px; }
+
+    .question-card {
+      border: 1px solid #dce5ea;
+      border-radius: 16px;
+      padding: 16px;
+      background: #fbfcfd;
+    }
+    .question-card h3 { margin: 0 0 8px; color: var(--navy); font-size: 16px; }
+    .score-box {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: #f1f6f8;
+      border: 1px solid #d7e3e9;
+      border-radius: 15px;
+      padding: 15px;
+    }
+    .score-value { font-size: 30px; font-weight: 900; color: var(--navy); }
+    .criteria { display: grid; gap: 8px; margin-top: 12px; }
+    .criterion { display: flex; gap: 8px; align-items: flex-start; font-size: 13px; }
+    .criterion input { width: 18px; margin-top: 5px; }
+
+    .tools-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 14px; }
+    .tool-card {
+      background: #fff;
+      border: 1px solid #dbe5ea;
+      border-radius: 18px;
+      padding: 17px;
+      display: flex;
+      flex-direction: column;
+      min-height: 250px;
+      box-shadow: 0 9px 28px rgba(17,58,92,.06);
+    }
+    .tool-icon {
+      width: 43px;
+      height: 43px;
+      border-radius: 13px;
+      display: grid;
+      place-items: center;
+      background: #eaf2f6;
+      color: var(--navy);
+      font-weight: 900;
+      margin-bottom: 12px;
+    }
+    .tool-card h3 { margin: 0 0 6px; color: var(--navy); font-size: 17px; }
+    .tool-card p { margin: 0; color: var(--muted); font-size: 13px; flex: 1; }
+    .tool-meta { margin: 11px 0; display: flex; flex-wrap: wrap; gap: 6px; }
+    .tag { background: #f0f5f7; color: #4c5f6c; border-radius: 999px; font-size: 11px; padding: 4px 8px; }
+
+    .github-flow { display: grid; gap: 10px; }
+    .flow-step {
+      display: grid;
+      grid-template-columns: 42px 1fr;
+      gap: 12px;
+      align-items: start;
+      border: 1px solid #dce5ea;
+      border-radius: 15px;
+      padding: 14px;
+      background: #fbfcfd;
+    }
+    .flow-number { width: 36px; height: 36px; border-radius: 11px; display: grid; place-items: center; background: var(--navy); color: #fff; font-weight: 900; }
+    .flow-step h3 { margin: 0; font-size: 15px; color: var(--navy); }
+    .flow-step p { margin: 2px 0 0; color: var(--muted); font-size: 13px; }
+
+    pre {
+      direction: ltr;
+      text-align: left;
+      background: #0e2434;
+      color: #dceaf2;
+      padding: 16px;
+      border-radius: 15px;
+      overflow: auto;
+      font-family: Consolas, monospace;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .downloads { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 11px; }
+    .download-card { border: 1px solid #dce5ea; background: #fbfcfd; border-radius: 15px; padding: 14px; }
+    .download-card strong { display: block; color: var(--navy); }
+    .download-card span { display: block; color: var(--muted); font-size: 12px; margin: 3px 0 10px; }
+
+    .backup-box { display: flex; flex-wrap: wrap; gap: 8px; }
+    .hidden-input { display: none; }
+
+    footer {
+      background: var(--navy-2);
+      color: rgba(255,255,255,.75);
+      padding: 25px 0;
+    }
+    .footer-inner {
+      width: min(1180px, calc(100% - 32px));
+      margin: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      font-size: 12px;
+    }
+    .footer-inner strong { color: #fff; }
+
+    .toast {
+      position: fixed;
+      left: 20px;
+      bottom: 20px;
+      background: #132c3d;
+      color: #fff;
+      padding: 11px 15px;
+      border-radius: 12px;
+      box-shadow: 0 12px 35px rgba(0,0,0,.2);
+      opacity: 0;
+      transform: translateY(15px);
+      pointer-events: none;
+      transition: .25s;
+      z-index: 100;
+      font-size: 13px;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 980px) {
+      .hero, .research-summary { grid-template-columns: 1fr; }
+      .tools-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+      .grid-4 { grid-template-columns: repeat(2, minmax(0,1fr)); }
+      .grid-3, .downloads { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    }
+    @media (max-width: 680px) {
+      .topbar-inner, .footer-inner { align-items: flex-start; flex-direction: column; gap: 4px; }
+      .hero { padding: 44px 0 42px; }
+      h1 { font-size: 35px; }
+      .hero-stat-grid, .grid-2, .grid-3, .grid-4, .tools-grid, .downloads { grid-template-columns: 1fr; }
+      main { width: min(100% - 20px, 1180px); margin-top: 18px; }
+      .panel { padding: 16px; border-radius: 17px; }
+      .section-head { align-items: flex-start; flex-direction: column; }
+      .stage-item { grid-template-columns: 32px 1fr 38px; }
+      .stage-item input[type="date"] { grid-column: 2 / 4; }
+      .matrix-toolbar, .task-toolbar { align-items: flex-start; flex-direction: column; }
+    }
+    @media print {
+      .topbar, header, .sticky-nav-wrap, .btn, footer, .toast, .notice-warn { display: none !important; }
+      body { background: #fff; }
+      main { width: 100%; margin: 0; }
+      section { break-inside: avoid; }
+      .panel, .tool-card { box-shadow: none; }
+      .table-wrap { overflow: visible; }
+      table { min-width: 100%; font-size: 9px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="topbar-inner">
+      <span><strong>مساحة بحثية عملية</strong> لطالبة الماجستير في القيادة والسياسات التعليمية</span>
+      <span>البيانات تحفظ محليًا داخل هذا المتصفح</span>
+    </div>
+  </div>
+
+  <header>
+    <div class="hero">
+      <div>
+        <span class="eyebrow">من الفكرة إلى المناقشة</span>
+        <h1>مساحة الباحثة<br>نورة المحمدي</h1>
+        <p>لوحة عربية تجمع تنظيم الرسالة، ومصفوفة الدراسات السابقة، ومتابعة المهام، وسجل القرارات، والأدوات المفتوحة التي تدعم البحث الإداري والتربوي.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#workspace">بدء تنظيم البحث</a>
+          <a class="btn btn-ghost" href="#github">إعداد GitHub للبحث</a>
+        </div>
+      </div>
+      <aside class="hero-card">
+        <h2>قراءة سريعة للمساحة</h2>
+        <div class="hero-stat-grid">
+          <div class="hero-stat"><strong id="heroStudies">0</strong><span>دراسة في المصفوفة</span></div>
+          <div class="hero-stat"><strong id="heroTasks">0%</strong><span>إنجاز مراحل البحث</span></div>
+          <div class="hero-stat"><strong>8</strong><span>أدوات موصى بها</span></div>
+          <div class="hero-stat"><strong>5</strong><span>قوالب GitHub جاهزة</span></div>
+        </div>
+      </aside>
+    </div>
+  </header>
+
+  <div class="sticky-nav-wrap">
+    <nav class="sticky-nav" aria-label="التنقل داخل الصفحة">
+      <a class="nav-pill" href="#workspace">لوحة البحث</a>
+      <a class="nav-pill" href="#stages">مراحل الرسالة</a>
+      <a class="nav-pill" href="#matrix">مصفوفة الدراسات</a>
+      <a class="nav-pill" href="#question">فحص سؤال البحث</a>
+      <a class="nav-pill" href="#tools">الأدوات المفتوحة</a>
+      <a class="nav-pill" href="#github">إعداد GitHub</a>
+      <a class="nav-pill" href="#backup">النسخ الاحتياطي</a>
+    </nav>
+  </div>
+
+  <main>
+    <section id="workspace">
+      <div class="section-head">
+        <div>
+          <h2>لوحة البحث</h2>
+          <p>ثبتي تعريف البحث في مكان واحد، وحددي المرحلة الحالية والموعد المستهدف.</p>
+        </div>
+        <button class="btn btn-soft btn-small" id="saveProfileBtn">حفظ البيانات</button>
+      </div>
+      <div class="panel research-summary">
+        <div class="grid-2">
+          <div class="field" style="grid-column:1/-1">
+            <label for="researchTitle">عنوان البحث المبدئي</label>
+            <input id="researchTitle" placeholder="مثال: دور القيادة التعليمية في ...">
+          </div>
+          <div class="field" style="grid-column:1/-1">
+            <label for="researchProblem">مشكلة البحث في فقرة مركزة</label>
+            <textarea id="researchProblem" placeholder="ما الظاهرة؟ ما الفجوة؟ وما أثرها؟"></textarea>
+          </div>
+          <div class="field">
+            <label for="researchField">المجال الدقيق</label>
+            <select id="researchField">
+              <option value="">اختيار المجال</option>
+              <option>القيادة التعليمية</option>
+              <option>السياسات التعليمية</option>
+              <option>الإدارة التربوية</option>
+              <option>التخطيط الاستراتيجي التعليمي</option>
+              <option>الحوكمة في المؤسسات التعليمية</option>
+              <option>مجال آخر</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="currentStage">المرحلة الحالية</label>
+            <select id="currentStage">
+              <option>اختيار الموضوع</option>
+              <option>إعداد الخطة</option>
+              <option>مراجعة الأدبيات</option>
+              <option>تصميم الأداة</option>
+              <option>جمع البيانات</option>
+              <option>تحليل البيانات</option>
+              <option>كتابة النتائج والمناقشة</option>
+              <option>المراجعة النهائية</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="targetDate">الموعد المستهدف للإنجاز</label>
+            <input id="targetDate" type="date">
+          </div>
+          <div class="field">
+            <label for="supervisorNote">أولوية المتابعة مع المشرف</label>
+            <input id="supervisorNote" placeholder="مثال: اعتماد أسئلة الدراسة">
+          </div>
+        </div>
+        <aside class="summary-side">
+          <h3>مؤشر التقدم</h3>
+          <div class="progress-track"><div class="progress-bar" id="progressBar"></div></div>
+          <div class="progress-line"><span id="progressText">0% مكتمل</span><span id="nextStageText">البداية: تحديد الموضوع</span></div>
+          <ul class="quick-list">
+            <li><span class="dot"></span><span>اكتبي مشكلة البحث بصيغة قابلة للقياس أو الاستكشاف.</span></li>
+            <li><span class="dot"></span><span>اربطي كل دراسة سابقة بفجوة محددة داخل المصفوفة.</span></li>
+            <li><span class="dot"></span><span>سجلي قراراتك المنهجية وتاريخ اعتمادها في المستودع.</span></li>
+          </ul>
+        </aside>
+      </div>
+    </section>
+
+    <section id="stages">
+      <div class="section-head">
+        <div>
+          <h2>مراحل الرسالة</h2>
+          <p>قائمة تنفيذية مرنة. حددي تاريخًا لكل مرحلة، ثم أغلقيها عند اكتمال المخرج الفعلي.</p>
+        </div>
+        <button class="btn btn-outline btn-small" id="resetStagesBtn">إعادة ضبط المراحل</button>
+      </div>
+      <div class="panel">
+        <div class="stage-list" id="stageList"></div>
+      </div>
+    </section>
+
+    <section id="matrix">
+      <div class="section-head">
+        <div>
+          <h2>مصفوفة الدراسات السابقة</h2>
+          <p>المصفوفة هي قلب مراجعة الأدبيات. المطلوب مقارنة الدراسات واستخراج الفجوة، بدل جمع ملخصات منفصلة.</p>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="matrix-toolbar">
+          <div class="toolbar-group">
+            <button class="btn btn-dark btn-small" id="addStudyBtn">إضافة دراسة</button>
+            <button class="btn btn-soft btn-small" id="exportCsvBtn">تصدير CSV</button>
+            <button class="btn btn-soft btn-small" id="exportMatrixJsonBtn">تصدير JSON</button>
+          </div>
+          <div class="counter"><strong id="studyCount">0</strong> دراسة محفوظة</div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>المرجع المختصر</th>
+                <th>السنة</th>
+                <th>الهدف</th>
+                <th>المنهج</th>
+                <th>المجتمع أو العينة</th>
+                <th>الأداة</th>
+                <th>أبرز النتائج</th>
+                <th>الفجوة</th>
+                <th>صلة الدراسة ببحثك</th>
+                <th>الإجراء</th>
+              </tr>
+            </thead>
+            <tbody id="matrixBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="question">
+      <div class="section-head">
+        <div>
+          <h2>فحص سؤال البحث</h2>
+          <p>فحص استرشادي يساعد على اكتشاف العمومية والتداخل قبل عرض السؤال على المشرف.</p>
+        </div>
+      </div>
+      <div class="panel grid-2">
+        <div class="question-card">
+          <h3>السؤال الرئيس</h3>
+          <textarea id="mainQuestion" placeholder="اكتبي السؤال الرئيس بصياغته الحالية"></textarea>
+          <div class="criteria" id="criteriaList"></div>
+        </div>
+        <div>
+          <div class="score-box">
+            <div>
+              <strong>درجة الجاهزية الاسترشادية</strong>
+              <div style="color:var(--muted);font-size:12px">ترتفع الدرجة مع تحقق معايير الوضوح والحدود والمنهجية.</div>
+            </div>
+            <div class="score-value" id="questionScore">0%</div>
+          </div>
+          <div class="notice notice-info" style="margin-top:12px">
+            <span class="notice-icon">◆</span>
+            <div><strong>قاعدة عملية</strong> السؤال القوي يحدد الظاهرة أو العلاقة، والفئة أو المؤسسة، والسياق، ويمكن الإجابة عنه ببيانات واقعية.</div>
+          </div>
+          <div class="field" style="margin-top:12px">
+            <label for="questionNotes">ملاحظات التحسين</label>
+            <textarea id="questionNotes" placeholder="ما الذي يحتاج تضييقًا أو تعريفًا أو إعادة صياغة؟"></textarea>
+          </div>
+          <button class="btn btn-dark btn-small" id="saveQuestionBtn" style="margin-top:10px">حفظ السؤال والفحص</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="tools">
+      <div class="section-head">
+        <div>
+          <h2>الأدوات المفتوحة المناسبة للبحث</h2>
+          <p>اختيار الأداة يتبع المهمة البحثية. GitHub ينظم المشروع وينشر المخرجات، وهذه الأدوات تنجز إدارة المراجع والتنظيف والتحليل والترميز.</p>
+        </div>
+      </div>
+      <div class="tools-grid">
+        <article class="tool-card">
+          <div class="tool-icon">Z</div>
+          <h3>Zotero</h3>
+          <p>جمع المراجع، حفظ ملفات PDF، التوسيم، الملاحظات، وإنشاء الاستشهادات والمراجع داخل Word.</p>
+          <div class="tool-meta"><span class="tag">المراجع</span><span class="tag">مجاني</span><span class="tag">مفتوح المصدر</span></div>
+          <a class="btn btn-soft btn-small" href="https://www.zotero.org/" target="_blank" rel="noopener">فتح الموقع الرسمي</a>
+        </article>
+        <article class="tool-card">
+          <div class="tool-icon">J</div>
+          <h3>JASP</h3>
+          <p>تحليل إحصائي بواجهة واضحة، مع اختبارات شائعة ومخرجات مناسبة للنشر وتنسيق قريب من APA.</p>
+          <div class="tool-meta"><span class="tag">تحليل كمي</span><span class="tag">مجاني</span><span class="tag">مفتوح المصدر</span></div>
+          <a class="btn btn-soft btn-small" href="https://jasp-stats.org/" target="_blank" rel="noopener">فتح الموقع الرسمي</a>
+        </article>
+        <article class="tool-card">
+          <div class="tool-icon">OR</div>
+          <h3>OpenRefine</h3>
+          <p>تنظيف بيانات الاستبانة، توحيد المسميات، كشف الاختلافات الإملائية، وتحويل الجداول قبل التحليل.</p>
+          <div class="tool-meta"><span class="tag">تنظيف البيانات</span><span class="tag">محلي</span><span class="tag">مفتوح المصدر</span></div>
+          <a class="btn btn-soft btn-small" href="https://openrefine.org/" target="_blank" rel="noopener">فتح الموقع الرسمي</a>
+        </article>
+        <article class="tool-card">
+          <div class="tool-icon">T</div>
+          <h3>Taguette</h3>
+          <p>ترميز المقابلات والوثائق نوعيًا، إنشاء شجرة رموز، واسترجاع الاقتباسات المصنفة وتصديرها.</p>
+          <div class="tool-meta"><span class="tag">بحث نوعي</span><span class="tag">ترميز</span><span class="tag">مفتوح المصدر</span></div>
+          <a class="btn btn-soft btn-small" href="https://www.taguette.org/" target="_blank" rel="noopener">فتح الموقع الرسمي</a>
+        </article>
+        <article class="tool-card">
+          <div class="tool-icon">P</div>
+          <h3>GitHub Projects</h3>
+          <p>لوحة مراحل الرسالة في جدول أو Kanban أو Roadmap، مع حقول للأولوية والموعد والحالة.</p>
+          <div class="tool-meta"><span class="tag">المتابعة</span><span class="tag">المهام</span><span class="tag">Roadmap</span></div>
+          <a class="btn btn-soft btn-small" href="https://docs.github.com/en/issues/planning-and-tracking-with-projects" target="_blank" rel="noopener">فتح التوثيق الرسمي</a>
+        </article>
+        <article class="tool-card">
+          <div class="tool-icon">I</div>
+          <h3>GitHub Issues</h3>
+          <p>تحويل العمل إلى مهام محددة مثل اعتماد الأداة، مراجعة فصل، أو معالجة ملاحظة من المشرف.</p>
+          <div class="tool-meta"><span class="tag">قرارات</span><span class="tag">ملاحظات</span><span class="tag">مهام فرعية</span></div>
+          <a class="btn btn-soft btn-small" href="https://docs.github.com/en/issues/tracking-your-work-with-issues/learning-about-issues/about-issues" target="_blank" rel="noopener">فتح التوثيق الرسمي</a>
+        </article>
+        <article class="tool-card">
+          <div class="tool-icon">GH</div>
+          <h3>GitHub Pages</h3>
+          <p>نشر صفحة تعريفية بالبحث، أو لوحة مخرجات عامة خالية من البيانات الحساسة، مباشرة من المستودع.</p>
+          <div class="tool-meta"><span class="tag">نشر ويب</span><span class="tag">HTML</span><span class="tag">مخرجات عامة</span></div>
+          <a class="btn btn-soft btn-small" href="https://docs.github.com/en/pages" target="_blank" rel="noopener">فتح التوثيق الرسمي</a>
+        </article>
+        <article class="tool-card">
+          <div class="tool-icon">C</div>
+          <h3>GitHub Codespaces</h3>
+          <p>بيئة عمل داخل المتصفح لتشغيل Python وJupyter دون إعداد تقني طويل على الجهاز.</p>
+          <div class="tool-meta"><span class="tag">Jupyter</span><span class="tag">Python</span><span class="tag">متصفح</span></div>
+          <a class="btn btn-soft btn-small" href="https://docs.github.com/en/codespaces" target="_blank" rel="noopener">فتح التوثيق الرسمي</a>
+        </article>
+      </div>
+      <div class="notice notice-info" style="margin-top:15px">
+        <span class="notice-icon">★</span>
+        <div><strong>ميزة تستحق التفعيل</strong> بصفتك طالبة جامعية، قد تكونين مؤهلة لحزمة GitHub Student Developer Pack بعد التحقق من صفة الطالب، وهي تجمع مزايا وأدوات تعليمية من GitHub وشركائه. <a href="https://education.github.com/pack/join" target="_blank" rel="noopener" style="font-weight:800;text-decoration:underline">فتح صفحة التحقق</a></div>
+      </div>
+    </section>
+
+        <section id="github">
+      <div class="section-head">
+        <div>
+          <h2>إعداد GitHub للبحث</h2>
+          <p>الهدف إنشاء سجل بحث منظم وقابل للتتبع، مع فصل واضح بين الملفات العامة والبيانات السرية.</p>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="panel">
+          <div class="github-flow">
+            <div class="flow-step"><div class="flow-number">1</div><div><h3>مستودع خاص للبحث</h3><p>يحوي خطة البحث، سجل القرارات، الأكواد، قوالب التحليل، والملفات التي يسمح نظام الجامعة بحفظها.</p></div></div>
+            <div class="flow-step"><div class="flow-number">2</div><div><h3>GitHub Project لمراحل الرسالة</h3><p>حقول مقترحة: المرحلة، الأولوية، الموعد، الحالة، نوع المخرج، وملاحظات المشرف.</p></div></div>
+            <div class="flow-step"><div class="flow-number">3</div><div><h3>Issue لكل مهمة قابلة للإغلاق</h3><p>مثال: مراجعة تعريف القيادة التعليمية، اختبار صدق الأداة، أو معالجة ملاحظة الفصل الثالث.</p></div></div>
+            <div class="flow-step"><div class="flow-number">4</div><div><h3>Release عند كل نسخة معتمدة</h3><p>ارفقي نسخة PDF أو DOCX المعتمدة بعنوان واضح مثل Proposal-v1 أو Thesis-draft-v3.</p></div></div>
+            <div class="flow-step"><div class="flow-number">5</div><div><h3>صفحة عامة للمخرجات فقط</h3><p>تنشر الملخص، العرض، الأدوات العامة، أو النتائج المصرح بها بعد إخفاء أي بيانات تعريفية.</p></div></div>
+          </div>
+        </div>
+        <div class="panel">
+          <h3 style="margin-top:0;color:var(--navy)">هيكل مستودع مقترح</h3>
+          <pre id="repoTree">master-research/
+├── README.md
+├── 01-proposal/
+│   ├── research-plan.md
+│   └── approved-proposal.pdf
+├── 02-literature/
+│   ├── literature-matrix.csv
+│   └── reading-notes/
+├── 03-methodology/
+│   ├── instrument-versions/
+│   └── data-dictionary.csv
+├── 04-analysis/
+│   ├── notebooks/
+│   └── outputs/
+├── 05-writing/
+│   └── chapter-notes/
+├── logs/
+│   ├── research-log.md
+│   └── decisions.md
+├── public-site/
+└── .gitignore</pre>
+          <button class="btn btn-outline btn-small" id="copyTreeBtn">نسخ الهيكل</button>
+        </div>
+      </div>
+
+      <div class="notice notice-warn" style="margin-top:15px">
+        <span class="notice-icon">!</span>
+        <div><strong>قاعدة الخصوصية</strong> ضعي أسماء المشاركين، التسجيلات، نماذج الموافقة، بيانات الاتصال، والملفات الخام في مساحة مؤسسية معتمدة ومشفرة. GitHub Pages مخصص للمحتوى العام، والمستودع الخاص وحده لا يجعل موقع Pages خاصًا تلقائيًا.</div>
+      </div>
+
+      <div class="panel" style="margin-top:15px">
+        <div class="section-head" style="margin-bottom:12px">
+          <div>
+            <h2 style="font-size:21px">حزمة ملفات البداية</h2>
+            <p>حملي القوالب، ثم ارفعيها إلى المستودع الخاص.</p>
+          </div>
+        </div>
+        <div class="downloads">
+          <div class="download-card"><strong>README.md</strong><span>تعريف البحث وبنية المستودع.</span><button class="btn btn-soft btn-small template-download" data-template="readme">تحميل</button></div>
+          <div class="download-card"><strong>research-log.md</strong><span>سجل أسبوعي للتقدم والعوائق.</span><button class="btn btn-soft btn-small template-download" data-template="log">تحميل</button></div>
+          <div class="download-card"><strong>decisions.md</strong><span>سجل القرارات المنهجية وأسبابها.</span><button class="btn btn-soft btn-small template-download" data-template="decisions">تحميل</button></div>
+          <div class="download-card"><strong>data-dictionary.csv</strong><span>تعريف المتغيرات والقيم والترميز.</span><button class="btn btn-soft btn-small template-download" data-template="dictionary">تحميل</button></div>
+          <div class="download-card"><strong>.gitignore</strong><span>استبعاد الملفات الحساسة والمحلية.</span><button class="btn btn-soft btn-small template-download" data-template="gitignore">تحميل</button></div>
+          <div class="download-card"><strong>issue-template.md</strong><span>قالب موحد لمهام الرسالة.</span><button class="btn btn-soft btn-small template-download" data-template="issue">تحميل</button></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="backup">
+      <div class="section-head">
+        <div>
+          <h2>النسخ الاحتياطي</h2>
+          <p>صدري بيانات هذه المساحة دوريًا. التخزين المحلي مرتبط بالمتصفح والجهاز المستخدم.</p>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="backup-box">
+          <button class="btn btn-dark" id="exportAllBtn">تصدير نسخة كاملة JSON</button>
+          <label class="btn btn-outline" for="importAllInput">استيراد نسخة محفوظة</label>
+          <input class="hidden-input" id="importAllInput" type="file" accept="application/json,.json">
+          <button class="btn btn-danger" id="clearAllBtn">مسح البيانات المحلية</button>
+          <button class="btn btn-soft" onclick="window.print()">طباعة ملخص المساحة</button>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="notice notice-info">
+        <span class="notice-icon">i</span>
+        <div><strong>حدود الاستخدام</strong> هذه المساحة أداة تنظيم واستعداد. اعتماد عنوان البحث والمنهج والأداة والتحليل يتم وفق دليل البرنامج وتوجيه المشرف واللجنة العلمية.</div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <div><strong>مساحة الباحثة</strong> — نسخة استرشادية أعدت للباحثة نورة المحمدي في القيادة والسياسات التعليمية.</div>
+      <div>أداة شخصية مستقلة وغير مرتبطة رسميًا بجامعة الملك عبدالعزيز.</div>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast">تم الحفظ</div>
+
+  <script>
+    const STORAGE_KEY = 'nouraResearchWorkspaceV1';
+
+    const stagesDefault = [
+      { title: 'تحديد الموضوع والفجوة', desc: 'صياغة نطاق واضح وربطه بأدبيات حديثة.', done: false, due: '' },
+      { title: 'إعداد خطة البحث', desc: 'المشكلة، الأسئلة، الأهداف، الأهمية، والحدود.', done: false, due: '' },
+      { title: 'بناء مراجعة الأدبيات', desc: 'مصفوفة مقارنة، محاور، وفجوة بحثية.', done: false, due: '' },
+      { title: 'تصميم المنهج والأداة', desc: 'المجتمع والعينة والأداة والصدق والثبات.', done: false, due: '' },
+      { title: 'الموافقات وجمع البيانات', desc: 'الإجراءات الأخلاقية وخطة الاستجابة.', done: false, due: '' },
+      { title: 'تنظيف البيانات وتحليلها', desc: 'توثيق خطوات التنظيف والاختبارات أو الترميز.', done: false, due: '' },
+      { title: 'كتابة النتائج والمناقشة', desc: 'ربط النتائج بالأسئلة والدراسات والنظرية.', done: false, due: '' },
+      { title: 'المراجعة والتسليم', desc: 'التنسيق، اللغة، المراجع، والملاحق.', done: false, due: '' }
+    ];
+
+    const criteriaDefault = [
+      'يحدد الظاهرة أو العلاقة بوضوح',
+      'يحدد الفئة أو المؤسسة المستهدفة',
+      'يحدد السياق المكاني أو التنظيمي',
+      'يمكن الإجابة عنه ببيانات واقعية',
+      'يتوافق مع المنهج المقترح',
+      'يخلو من جمع أكثر من سؤال مركب'
+    ];
+
+    function initialState() {
+      return {
+        profile: { title: '', problem: '', field: '', stage: 'اختيار الموضوع', targetDate: '', supervisorNote: '' },
+        stages: structuredClone(stagesDefault),
+        studies: [],
+        question: { text: '', notes: '', checks: criteriaDefault.map(() => false) }
+      };
+    }
+
+    let state = loadState();
+
+    function loadState() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+        return saved ? { ...initialState(), ...saved } : initialState();
+      } catch {
+        return initialState();
+      }
+    }
+
+    function saveState(message = 'تم حفظ البيانات') {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      refreshStats();
+      showToast(message);
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.add('show');
+      clearTimeout(showToast.timer);
+      showToast.timer = setTimeout(() => toast.classList.remove('show'), 1800);
+    }
+
+    function escapeCsv(value) {
+      const text = String(value ?? '').replace(/"/g, '""');
+      return `"${text}"`;
+    }
+
+    function downloadFile(filename, content, type = 'text/plain;charset=utf-8') {
+      const blob = new Blob([content], { type });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    function bindProfile() {
+      const map = {
+        researchTitle: 'title', researchProblem: 'problem', researchField: 'field',
+        currentStage: 'stage', targetDate: 'targetDate', supervisorNote: 'supervisorNote'
+      };
+      for (const [id, key] of Object.entries(map)) {
+        const el = document.getElementById(id);
+        el.value = state.profile[key] || '';
+        el.addEventListener('input', () => { state.profile[key] = el.value; });
+      }
+      document.getElementById('saveProfileBtn').addEventListener('click', () => saveState('تم حفظ لوحة البحث'));
+    }
+
+    function renderStages() {
+      const list = document.getElementById('stageList');
+      list.innerHTML = '';
+      state.stages.forEach((stage, index) => {
+        const item = document.createElement('div');
+        item.className = `stage-item ${stage.done ? 'done' : ''}`;
+        item.innerHTML = `
+          <div class="stage-index">${index + 1}</div>
+          <div><div class="stage-title">${stage.title}</div><div class="stage-desc">${stage.desc}</div></div>
+          <input type="date" aria-label="موعد ${stage.title}" value="${stage.due || ''}">
+          <button class="check-button" aria-label="اكتمال ${stage.title}">✓</button>`;
+        item.querySelector('input').addEventListener('change', e => { state.stages[index].due = e.target.value; saveState('تم تحديث موعد المرحلة'); });
+        item.querySelector('button').addEventListener('click', () => { state.stages[index].done = !state.stages[index].done; saveState(state.stages[index].done ? 'تم إكمال المرحلة' : 'تم إعادة فتح المرحلة'); renderStages(); });
+        list.appendChild(item);
+      });
+      refreshStats();
+    }
+
+    function newStudy() {
+      return { citation: '', year: '', objective: '', method: '', sample: '', instrument: '', findings: '', gap: '', relevance: '' };
+    }
+
+    function renderMatrix() {
+      const body = document.getElementById('matrixBody');
+      body.innerHTML = '';
+      state.studies.forEach((study, index) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${index + 1}</td>
+          <td><textarea data-key="citation" placeholder="المؤلف، السنة">${study.citation || ''}</textarea></td>
+          <td><input data-key="year" inputmode="numeric" value="${study.year || ''}" placeholder="2026"></td>
+          <td><textarea data-key="objective">${study.objective || ''}</textarea></td>
+          <td><select data-key="method">
+            <option value="">اختيار</option>
+            <option ${study.method === 'وصفي كمي' ? 'selected' : ''}>وصفي كمي</option>
+            <option ${study.method === 'نوعي' ? 'selected' : ''}>نوعي</option>
+            <option ${study.method === 'مختلط' ? 'selected' : ''}>مختلط</option>
+            <option ${study.method === 'تحليل وثائق' ? 'selected' : ''}>تحليل وثائق</option>
+            <option ${study.method === 'دراسة حالة' ? 'selected' : ''}>دراسة حالة</option>
+            <option ${study.method === 'أخرى' ? 'selected' : ''}>أخرى</option>
+          </select></td>
+          <td><textarea data-key="sample">${study.sample || ''}</textarea></td>
+          <td><textarea data-key="instrument">${study.instrument || ''}</textarea></td>
+          <td><textarea data-key="findings">${study.findings || ''}</textarea></td>
+          <td><textarea data-key="gap">${study.gap || ''}</textarea></td>
+          <td><textarea data-key="relevance">${study.relevance || ''}</textarea></td>
+          <td><div class="row-actions"><button class="btn btn-danger btn-small delete-row">حذف</button></div></td>`;
+        tr.querySelectorAll('[data-key]').forEach(el => {
+          el.addEventListener('change', () => {
+            state.studies[index][el.dataset.key] = el.value;
+            saveState('تم حفظ الدراسة');
+          });
+        });
+        tr.querySelector('.delete-row').addEventListener('click', () => {
+          state.studies.splice(index, 1);
+          saveState('تم حذف الدراسة');
+          renderMatrix();
+        });
+        body.appendChild(tr);
+      });
+      document.getElementById('studyCount').textContent = state.studies.length;
+      refreshStats();
+    }
+
+    function setupMatrixButtons() {
+      document.getElementById('addStudyBtn').addEventListener('click', () => {
+        state.studies.push(newStudy());
+        saveState('تمت إضافة دراسة');
+        renderMatrix();
+      });
+      document.getElementById('exportCsvBtn').addEventListener('click', () => {
+        const headers = ['المرجع المختصر','السنة','الهدف','المنهج','المجتمع أو العينة','الأداة','أبرز النتائج','الفجوة','صلة الدراسة بالبحث'];
+        const rows = state.studies.map(s => [s.citation,s.year,s.objective,s.method,s.sample,s.instrument,s.findings,s.gap,s.relevance]);
+        const csv = '\uFEFF' + [headers, ...rows].map(row => row.map(escapeCsv).join(',')).join('\n');
+        downloadFile('literature-matrix.csv', csv, 'text/csv;charset=utf-8');
+      });
+      document.getElementById('exportMatrixJsonBtn').addEventListener('click', () => {
+        downloadFile('literature-matrix.json', JSON.stringify(state.studies, null, 2), 'application/json');
+      });
+    }
+
+    function renderQuestion() {
+      const text = document.getElementById('mainQuestion');
+      const notes = document.getElementById('questionNotes');
+      text.value = state.question.text || '';
+      notes.value = state.question.notes || '';
+      text.addEventListener('input', () => { state.question.text = text.value; });
+      notes.addEventListener('input', () => { state.question.notes = notes.value; });
+      const list = document.getElementById('criteriaList');
+      list.innerHTML = '';
+      criteriaDefault.forEach((label, index) => {
+        const row = document.createElement('label');
+        row.className = 'criterion';
+        row.innerHTML = `<input type="checkbox" ${state.question.checks[index] ? 'checked' : ''}><span>${label}</span>`;
+        row.querySelector('input').addEventListener('change', e => { state.question.checks[index] = e.target.checked; updateQuestionScore(); });
+        list.appendChild(row);
+      });
+      document.getElementById('saveQuestionBtn').addEventListener('click', () => saveState('تم حفظ فحص السؤال'));
+      updateQuestionScore();
+    }
+
+    function updateQuestionScore() {
+      const checked = state.question.checks.filter(Boolean).length;
+      const score = Math.round((checked / criteriaDefault.length) * 100);
+      document.getElementById('questionScore').textContent = `${score}%`;
+    }
+
+    function refreshStats() {
+      const completed = state.stages.filter(s => s.done).length;
+      const pct = Math.round((completed / state.stages.length) * 100);
+      document.getElementById('progressBar').style.width = `${pct}%`;
+      document.getElementById('progressText').textContent = `${pct}% مكتمل`;
+      document.getElementById('heroTasks').textContent = `${pct}%`;
+      document.getElementById('heroStudies').textContent = state.studies.length;
+      const next = state.stages.find(s => !s.done);
+      document.getElementById('nextStageText').textContent = next ? `التالي: ${next.title}` : 'اكتملت جميع المراحل';
+    }
+
+    function setupTemplates() {
+      const templates = {
+        readme: {
+          name: 'README.md',
+          content: `# مشروع رسالة الماجستير\n\n## عنوان البحث\n[يكتب العنوان هنا]\n\n## المجال\nالقيادة والسياسات التعليمية\n\n## مشكلة البحث\n[ملخص مركز]\n\n## السؤال الرئيس\n[السؤال]\n\n## منهج البحث\n[المنهج]\n\n## بنية المستودع\n- 01-proposal: خطة البحث والنسخ المعتمدة\n- 02-literature: مصفوفة الدراسات وملاحظات القراءة\n- 03-methodology: الأداة وتعريف البيانات\n- 04-analysis: ملفات التحليل والمخرجات\n- 05-writing: ملاحظات الفصول\n- logs: سجل العمل والقرارات\n\n## الخصوصية\nيحفظ هذا المستودع الملفات المصرح بها فقط، وتوضع البيانات الحساسة في مساحة مؤسسية معتمدة.\n`
+        },
+        log: {
+          name: 'research-log.md',
+          content: `# سجل العمل البحثي\n\n## الأسبوع: [التاريخ]\n### ما أُنجز\n- \n\n### القرارات أو الملاحظات\n- \n\n### العوائق\n- \n\n### الخطوة التالية\n- \n`
+        },
+        decisions: {
+          name: 'decisions.md',
+          content: `# سجل القرارات المنهجية\n\n| التاريخ | القرار | البدائل التي تمت دراستها | سبب الاختيار | الاعتماد |\n|---|---|---|---|---|\n| YYYY-MM-DD |  |  |  |  |\n`
+        },
+        dictionary: {
+          name: 'data-dictionary.csv',
+          content: '\uFEFFاسم_المتغير,الوصف,النوع,القيم_المسموحة,القيمة_المفقودة,ملاحظات\nvariable_1,وصف المتغير,رقمي,"1-5",99,\n'
+        },
+        gitignore: {
+          name: '.gitignore',
+          content: `# بيانات حساسة أو خام\nraw-data/\nparticipants/\nconsent-forms/\nrecordings/\ntranscripts-identifiable/\nraw-exports/\n\n# ملفات النظام والنسخ المؤقتة\n.DS_Store\nThumbs.db\n~$*\n*.tmp\n.env\n`
+        },
+        issue: {
+          name: 'issue-template.md',
+          content: `---\nname: مهمة بحثية\nabout: متابعة مخرج محدد في الرسالة\ntitle: "[المرحلة] اسم المهمة"\nlabels: research-task\n---\n\n## المخرج المطلوب\n\n## معيار الإغلاق\n\n## الموعد المستهدف\n\n## الملاحظات والمراجع\n\n## قائمة التحقق\n- [ ] تنفيذ المهمة\n- [ ] مراجعة النتيجة\n- [ ] توثيق القرار أو الملف الناتج\n`
+        }
+      };
+      document.querySelectorAll('.template-download').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const item = templates[btn.dataset.template];
+          downloadFile(item.name, item.content);
+        });
+      });
+    }
+
+    function setupGeneralActions() {
+      document.getElementById('copyTreeBtn').addEventListener('click', async () => {
+        await navigator.clipboard.writeText(document.getElementById('repoTree').innerText);
+        showToast('تم نسخ هيكل المستودع');
+      });
+      document.getElementById('resetStagesBtn').addEventListener('click', () => {
+        state.stages = structuredClone(stagesDefault);
+        saveState('تمت إعادة ضبط المراحل');
+        renderStages();
+      });
+      document.getElementById('exportAllBtn').addEventListener('click', () => {
+        downloadFile('research-workspace-backup.json', JSON.stringify(state, null, 2), 'application/json');
+      });
+      document.getElementById('importAllInput').addEventListener('change', event => {
+        const file = event.target.files?.[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = () => {
+          try {
+            const imported = JSON.parse(reader.result);
+            state = { ...initialState(), ...imported };
+            saveState('تم استيراد النسخة المحفوظة');
+            location.reload();
+          } catch {
+            showToast('تعذر قراءة ملف النسخة');
+          }
+        };
+        reader.readAsText(file);
+      });
+      document.getElementById('clearAllBtn').addEventListener('click', () => {
+        const confirmText = prompt('للتأكيد اكتبي: مسح');
+        if (confirmText === 'مسح') {
+          localStorage.removeItem(STORAGE_KEY);
+          state = initialState();
+          showToast('تم مسح البيانات المحلية');
+          setTimeout(() => location.reload(), 500);
+        }
+      });
+    }
+
+    bindProfile();
+    renderStages();
+    renderMatrix();
+    setupMatrixButtons();
+    renderQuestion();
+    setupTemplates();
+    setupGeneralActions();
+    refreshStats();
+  </script>
+</body>
+</html>
