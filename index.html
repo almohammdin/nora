@@ -9,7 +9,7 @@
 <meta content="مساحة عمل بحثية خاصة لتنظيم رحلة الماجستير، والمهام، والمواعيد، ومصفوفة الدراسات، مع حفظ سحابي وأدوات بحث وذكاء اصطناعي." name="description"/>
 <link href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http://www.w3.org/2000/svg%22%20viewBox%3D%220%200%20420%20420%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20stop-color%3D%22%23c9869f%22/%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%239b789f%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle%20cx%3D%22210%22%20cy%3D%22210%22%20r%3D%22198%22%20fill%3D%22%23fff9f6%22%20stroke%3D%22%23ead6df%22%20stroke-width%3D%2210%22/%3E%3Cpath%20d%3D%22M115%20260c38-102%2076-150%20110-150%2052%200%2083%2075%2080%20174%22%20fill%3D%22none%22%20stroke%3D%22url(%23g)%22%20stroke-width%3D%2224%22%20stroke-linecap%3D%22round%22/%3E%3Cpath%20d%3D%22M120%20285h180%22%20stroke%3D%22%23b98aa0%22%20stroke-width%3D%2218%22%20stroke-linecap%3D%22round%22/%3E%3Ccircle%20cx%3D%22302%22%20cy%3D%22112%22%20r%3D%2218%22%20fill%3D%22%23d4a6b8%22/%3E%3Cpath%20d%3D%22M142%20325c44%2022%2092%2022%20136%200%22%20fill%3D%22none%22%20stroke%3D%22%23a8b5a2%22%20stroke-width%3D%2212%22%20stroke-linecap%3D%22round%22/%3E%3C/svg%3E" rel="icon" type="image/png"/>
 <style>
- @import url('https://fonts.googleapis.com/css2?family=Alexandria:wght@400;500;600;700;800&family=Readex+Pro:wght@400;500;600;700&display=swap');
+ @import url('https://fonts.googleapis.com/css2?family=El+Messiri:wght@400;500;600;700&family=Readex+Pro:wght@400;500;600;700&display=swap');
  :root {
  --navy: #8f5f73;
  --navy-2: #6f4558;
@@ -41,7 +41,7 @@
  margin: 0;
  background: linear-gradient(180deg, #fff9f6 0%, #f8eef2 48%, #f7f2f7 100%);
  color: var(--ink);
- font-family: "Alexandria", "Tahoma", "Arial", sans-serif;
+ font-family: "El Messiri", "Tahoma", "Arial", sans-serif;
  line-height: 1.8;
  -webkit-font-smoothing: antialiased;
  }
@@ -258,16 +258,26 @@
 
  .stage-list { display: grid; gap: 11px; }
  .stage-item {
- display: grid;
- grid-template-columns: 34px 1fr 150px 42px;
- align-items: center;
- gap: 12px;
+ display: flex;
+ flex-direction: column;
+ gap: 9px;
  border: 1px solid #dae4ea;
  background: #fbfcfd;
  padding: 11px;
  border-radius: 14px;
  }
+ .stage-item-top {
+ display: grid;
+ grid-template-columns: 34px 1fr 150px 42px;
+ align-items: center;
+ gap: 12px;
+ }
  .stage-item.done { background: #f2fbf7; border-color: #bfe2d4; }
+ .stage-progress-row { display: flex; align-items: center; gap: 10px; padding-inline-start: 46px; }
+ .stage-progress-row input[type="range"] { flex: 1; accent-color: #8f5f73; }
+ .stage-progress-value { min-width: 38px; text-align: center; font-size: 12px; font-weight: 800; color: #735061; }
+ .stage-progress-track { height: 5px; margin-inline-start: 46px; border-radius: 999px; overflow: hidden; background: #eadde2; }
+ .stage-progress-fill { display: block; height: 100%; background: linear-gradient(90deg,#c58da0,#a78eb5,#9caf9b); transition: width .25s ease; }
  .stage-index {
  width: 31px;
  height: 31px;
@@ -576,7 +586,7 @@
 
  /* الهوية الأنثوية النهائية */
  h1, h2, h3, h4, .btn, .nav-pill, label, .eyebrow, .topbar, .hero-stat strong {
- font-family: "Readex Pro", "Alexandria", sans-serif;
+ font-family: "Readex Pro", "El Messiri", sans-serif;
  }
  body {
  font-weight: 400;
@@ -838,8 +848,9 @@
  main { width: min(100% - 20px, 1180px); margin-top: 18px; }
  .panel { padding: 16px; border-radius: 17px; }
  .section-head { align-items: flex-start; flex-direction: column; }
- .stage-item { grid-template-columns: 32px 1fr 38px; }
- .stage-item input[type="date"] { grid-column: 2 / 4; }
+ .stage-item-top { grid-template-columns: 32px 1fr 38px; }
+ .stage-item-top input[type="date"] { grid-column: 2 / 4; }
+ .stage-progress-row, .stage-progress-track { padding-inline-start: 0; margin-inline-start: 0; }
  .matrix-toolbar, .task-toolbar { align-items: flex-start; flex-direction: column; }
  }
  @media print {
@@ -1000,6 +1011,10 @@
  .panel,.tool-card,.addon-card,.task-card,.event-card,.meeting-card,.research-result-card,.mini-card,.kpi-card{position:relative;overflow:hidden}
  .panel::before,.addon-card::before,.tool-card::before,.task-card::before,.event-card::before,.meeting-card::before,.research-result-card::before,.mini-card::before,.kpi-card::before{content:"";position:absolute;inset:auto auto -42px -22px;width:118px;height:118px;border-radius:32px;background:radial-gradient(circle at center,rgba(192,132,154,.13),rgba(192,132,154,0));pointer-events:none}
  .panel::after,.addon-card::after,.tool-card::after,.task-card::after,.event-card::after,.meeting-card::after,.research-result-card::after,.mini-card::after,.kpi-card::after{content:"";position:absolute;inset:0 auto auto 0;width:100%;height:4px;background:linear-gradient(90deg,#e8c7d4,#b87c92,#7e5065);opacity:.9}
+ /* ترميز لوني لكل نوع بطاقة: مهمة = وردي (افتراضي)، اجتماع = بنفسجي، حدث = ذهبي، أداة = أخضر مائل للسيج */
+ .meeting-card::after{background:linear-gradient(90deg,#e3d9ee,var(--mauve),#6f4558)}
+ .event-card::after{background:linear-gradient(90deg,#ecd9b0,var(--gold),#8a6a3a)}
+ .tool-card::after{background:linear-gradient(90deg,#d8e4d5,var(--teal),#5f7a63)}
  .kpi-card{border-radius:28px 28px 20px 28px;background:linear-gradient(155deg,rgba(255,255,255,.99),rgba(250,240,245,.97) 62%,rgba(247,231,238,.94));box-shadow:0 16px 42px rgba(111,72,88,.10)}
  .mini-card{border-radius:22px 22px 16px 22px;background:linear-gradient(160deg,rgba(255,255,255,.98),rgba(250,242,246,.94))}
  .panel,.addon-card,.tool-card,.meeting-card,.task-card,.event-card,.research-result-card{border-radius:26px 26px 18px 26px;box-shadow:0 14px 38px rgba(97,63,77,.08)}
@@ -1454,6 +1469,26 @@
     justify-content:center;
   }
 }
+
+
+ .dashboard-date {
+ display:flex;
+ align-items:center;
+ flex-wrap:wrap;
+ gap:8px;
+ direction:rtl;
+ }
+ .dashboard-date .date-divider {
+ color:#c69aaa;
+ font-weight:600;
+ opacity:.8;
+ }
+ @media (max-width:600px) {
+ .dashboard-date {
+ gap:5px;
+ line-height:1.7;
+ }
+ }
 
 </style>
 <style id="research-addons-style">
@@ -1958,14 +1993,14 @@ const DATE_LOCALE = "ar-SA-u-nu-latn";
 const TIME_ZONE = "Asia/Riyadh";
 
 const stagesDefault = [
- { title: "تحديد الموضوع والفجوة", desc: "صياغة نطاق واضح وربطه بأدبيات حديثة.", weight: 5, done: false, due: "" },
- { title: "إعداد خطة البحث", desc: "المشكلة، الأسئلة، الأهداف، الأهمية، والحدود.", weight: 15, done: false, due: "" },
- { title: "بناء مراجعة الأدبيات", desc: "مصفوفة مقارنة، محاور، وفجوة بحثية.", weight: 20, done: false, due: "" },
- { title: "تصميم المنهج والأداة", desc: "المجتمع والعينة والأداة والصدق والثبات.", weight: 15, done: false, due: "" },
- { title: "الموافقات وجمع البيانات", desc: "الإجراءات الأخلاقية وخطة الاستجابة.", weight: 15, done: false, due: "" },
- { title: "تنظيف البيانات وتحليلها", desc: "توثيق خطوات التنظيف والاختبارات أو الترميز.", weight: 15, done: false, due: "" },
- { title: "كتابة النتائج والمناقشة", desc: "ربط النتائج بالأسئلة والدراسات والنظرية.", weight: 10, done: false, due: "" },
- { title: "المراجعة والتسليم", desc: "التنسيق، اللغة، المراجع، والملاحق.", weight: 5, done: false, due: "" }
+ { title: "تحديد الموضوع والفجوة", desc: "صياغة نطاق واضح وربطه بأدبيات حديثة.", weight: 5, done: false, due: "", progress: 0 },
+ { title: "إعداد خطة البحث", desc: "المشكلة، الأسئلة، الأهداف، الأهمية، والحدود.", weight: 15, done: false, due: "", progress: 0 },
+ { title: "بناء مراجعة الأدبيات", desc: "مصفوفة مقارنة، محاور، وفجوة بحثية.", weight: 20, done: false, due: "", progress: 0 },
+ { title: "تصميم المنهج والأداة", desc: "المجتمع والعينة والأداة والصدق والثبات.", weight: 15, done: false, due: "", progress: 0 },
+ { title: "الموافقات وجمع البيانات", desc: "الإجراءات الأخلاقية وخطة الاستجابة.", weight: 15, done: false, due: "", progress: 0 },
+ { title: "تنظيف البيانات وتحليلها", desc: "توثيق خطوات التنظيف والاختبارات أو الترميز.", weight: 15, done: false, due: "", progress: 0 },
+ { title: "كتابة النتائج والمناقشة", desc: "ربط النتائج بالأسئلة والدراسات والنظرية.", weight: 10, done: false, due: "", progress: 0 },
+ { title: "المراجعة والتسليم", desc: "التنسيق، اللغة، المراجع، والملاحق.", weight: 5, done: false, due: "", progress: 0 }
 ];
 
 const criteriaDefault = [
@@ -1994,7 +2029,7 @@ function initialState() {
  integrations: { unpaywallEmail: "", academicKeywords: "", lastUniversityCheck: "" },
  automation: { stipend: true, academic: true, weeklyReport: true, monthlyBackup: true, booksReminderDate: "" },
  aiHistory: [],
- meta: { version: 4, createdAt: Date.now() }
+ meta: { version: 5, createdAt: Date.now() }
  };
 }
 
@@ -2005,7 +2040,17 @@ function normalizeState(raw) {
  normalized.profile = { ...base.profile, ...(raw.profile || {}) };
  normalized.question = { ...base.question, ...(raw.question || {}) };
  normalized.question.checks = criteriaDefault.map((_, i) => Boolean(raw.question?.checks?.[i]));
- normalized.stages = stagesDefault.map((stage, i) => ({ ...stage, ...(raw.stages?.[i] || {}), weight: stage.weight }));
+ normalized.stages = stagesDefault.map((stage, i) => {
+ const savedStage = raw.stages?.[i] || {};
+ const merged = { ...stage, ...savedStage, weight: stage.weight };
+ let progress = Object.prototype.hasOwnProperty.call(savedStage, "progress")
+ ? Number(savedStage.progress)
+ : (savedStage.done ? 100 : 0);
+ if (!Number.isFinite(progress)) progress = savedStage.done ? 100 : 0;
+ merged.progress = Math.max(0, Math.min(100, Math.round(progress)));
+ merged.done = merged.progress >= 100;
+ return merged;
+ });
  normalized.studies = Array.isArray(raw.studies) ? raw.studies.map((item) => ({ ...newStudy(), ...item, createdAt: Number(item.createdAt || 0) })) : [];
  normalized.tasks = Array.isArray(raw.tasks) ? raw.tasks.map((item) => ({ ...newTask(), ...item })) : [];
  normalized.events = Array.isArray(raw.events) ? raw.events.map((item) => ({ ...newEvent(), ...item })) : [];
@@ -2014,7 +2059,7 @@ function normalizeState(raw) {
  normalized.integrations = { ...base.integrations, ...(raw.integrations || {}) };
  normalized.automation = { ...base.automation, ...(raw.automation || {}) };
  normalized.aiHistory = Array.isArray(raw.aiHistory) ? raw.aiHistory.slice(-12) : [];
- normalized.meta = { ...base.meta, ...(raw.meta || {}), version: 4 };
+ normalized.meta = { ...base.meta, ...(raw.meta || {}), version: 5 };
  return normalized;
 }
 
@@ -2034,7 +2079,7 @@ function hasMeaningfulData(value) {
  return Boolean(
  value.profile?.title || value.profile?.problem || value.profile?.targetDate ||
  value.studies?.length || value.tasks?.length || value.events?.length || value.meetings?.length ||
- value.stages?.some((stage) => stage.done || stage.due)
+ value.stages?.some((stage) => Number(stage.progress || 0) > 0 || stage.due)
  );
 }
 
@@ -2071,6 +2116,32 @@ function dateKey(date) {
  const month = String(date.getMonth() + 1).padStart(2, "0");
  const day = String(date.getDate()).padStart(2, "0");
  return `${year}-${month}-${day}`;
+}
+
+
+function formatCalendarDateParts(date, calendar) {
+ const locale = `ar-SA-u-ca-${calendar}-nu-latn`;
+ const parts = new Intl.DateTimeFormat(locale, {
+ timeZone: TIME_ZONE,
+ day: "numeric",
+ month: "long",
+ year: "numeric"
+ }).formatToParts(date);
+ const values = {};
+ parts.forEach((part) => {
+ if (part.type === "day" || part.type === "month" || part.type === "year") values[part.type] = part.value;
+ });
+ return `${values.day || ""} ${values.month || ""} ${values.year || ""}`.trim();
+}
+
+function formatTodayLabel(date) {
+ const weekday = new Intl.DateTimeFormat("ar-SA-u-ca-gregory-nu-latn", {
+ weekday: "long",
+ timeZone: TIME_ZONE
+ }).format(date);
+ const hijri = formatCalendarDateParts(date, "islamic-umalqura");
+ const gregorian = formatCalendarDateParts(date, "gregory");
+ return `<span>اليوم ${escapeHtml(weekday)}</span><span aria-hidden="true" class="date-divider">|</span><span>${escapeHtml(hijri)}هـ</span><span aria-hidden="true" class="date-divider">|</span><span>${escapeHtml(gregorian)}م</span>`;
 }
 
 function formatDate(dateValue, options = {}) {
@@ -2208,12 +2279,15 @@ function newMeeting() {
 
 function weightedProgress() {
  const total = state.stages.reduce((sum, stage) => sum + Number(stage.weight || 0), 0) || 100;
- const done = state.stages.reduce((sum, stage) => sum + (stage.done ? Number(stage.weight || 0) : 0), 0);
+ const done = state.stages.reduce((sum, stage) => {
+ const pct = Math.max(0, Math.min(100, Number(stage.progress || 0)));
+ return sum + Number(stage.weight || 0) * (pct / 100);
+ }, 0);
  return Math.round((done / total) * 100);
 }
 
 function currentStage() {
- return state.stages.find((stage) => !stage.done) || state.stages[state.stages.length - 1];
+ return state.stages.find((stage) => Number(stage.progress || 0) < 100) || state.stages[state.stages.length - 1];
 }
 
 function openTasks() {
@@ -2250,7 +2324,7 @@ function nextByDate(items, dateField, timeField = "") {
 
 function renderDashboard() {
  const today = new Date();
- $("todayLabel").textContent = new Intl.DateTimeFormat(DATE_LOCALE, { weekday:"long", day:"numeric", month:"long", year:"numeric", timeZone:TIME_ZONE }).format(today);
+ $("todayLabel").innerHTML = formatTodayLabel(today);
  const end = new Date(today); end.setDate(end.getDate() + 7);
  $("weekRange").textContent = `${formatDate(today)} إلى ${formatDate(end, { year:"numeric" })}`;
 
@@ -2324,11 +2398,23 @@ function renderStages() {
  const list = $("stageList");
  list.innerHTML = "";
  state.stages.forEach((stage,index) => {
+ const progress = Math.max(0, Math.min(100, Number(stage.progress || 0)));
  const item = document.createElement("div");
- item.className = `stage-item ${stage.done ? "done" : ""}`;
- item.innerHTML = `<div class="stage-index">${index + 1}</div><div><div class="stage-title">${escapeHtml(stage.title)} <span class="meta-pill">${stage.weight}%</span></div><div class="stage-desc">${escapeHtml(stage.desc)}</div></div><input type="date" aria-label="موعد ${escapeHtml(stage.title)}" value="${escapeHtml(stage.due || "")}"><button class="check-button" type="button" aria-label="اكتمال ${escapeHtml(stage.title)}">✓</button>`;
- item.querySelector("input").addEventListener("change", (event) => { state.stages[index].due = event.target.value; queueSave("تم تحديث موعد المرحلة"); renderDashboard(); });
- item.querySelector("button").addEventListener("click", () => { state.stages[index].done = !state.stages[index].done; queueSave(state.stages[index].done ? "تم إكمال المرحلة" : "تم إعادة فتح المرحلة"); renderStages(); });
+ item.className = `stage-item ${progress >= 100 ? "done" : ""}`;
+ item.innerHTML = `<div class="stage-item-top"><div class="stage-index">${index + 1}</div><div><div class="stage-title">${escapeHtml(stage.title)} <span class="meta-pill">${stage.weight}%</span></div><div class="stage-desc">${escapeHtml(stage.desc)}</div></div><input type="date" aria-label="موعد ${escapeHtml(stage.title)}" value="${escapeHtml(stage.due || "")}"><button class="check-button" type="button" aria-label="اكتمال ${escapeHtml(stage.title)}">✓</button></div><div class="stage-progress-row"><input type="range" min="0" max="100" step="5" value="${progress}" class="stage-progress-range" aria-label="نسبة الإنجاز الفعلي لمرحلة ${escapeHtml(stage.title)}"><span class="stage-progress-value">${progress}%</span></div><div class="stage-progress-track"><span class="stage-progress-fill" style="width:${progress}%"></span></div>`;
+ item.querySelector('input[type="date"]').addEventListener("change", (event) => { state.stages[index].due = event.target.value; queueSave("تم تحديث موعد المرحلة"); renderDashboard(); });
+ const range = item.querySelector(".stage-progress-range");
+ const valueLabel = item.querySelector(".stage-progress-value");
+ const fill = item.querySelector(".stage-progress-fill");
+ range.addEventListener("input", () => { valueLabel.textContent = `${range.value}%`; fill.style.width = `${range.value}%`; });
+ range.addEventListener("change", () => { state.stages[index].progress = Number(range.value); state.stages[index].done = Number(range.value) >= 100; queueSave("تم تحديث نسبة الإنجاز"); renderStages(); renderDashboard(); });
+ item.querySelector(".check-button").addEventListener("click", () => {
+ const isDone = Number(state.stages[index].progress || 0) >= 100;
+ state.stages[index].progress = isDone ? 0 : 100;
+ state.stages[index].done = !isDone;
+ queueSave(isDone ? "تم إعادة فتح المرحلة" : "تم إكمال المرحلة");
+ renderStages(); renderDashboard();
+ });
  list.appendChild(item);
  });
  refreshProgressElements();
