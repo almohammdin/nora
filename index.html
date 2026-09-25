@@ -2,7 +2,7 @@
 <html dir="rtl" lang="ar">
 <head>
 <meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content" name="viewport"/>
 <meta content="light" name="color-scheme"/>
 <meta content="#9b667a" name="theme-color"/>
 <title>مساحة الباحثة نورة المحمدي | لوحة الماجستير</title>
@@ -1873,7 +1873,7 @@ body{padding-top:var(--nora-ribbon-height);max-width:100%;overflow-x:hidden}
 @media(prefers-reduced-motion:reduce){.nora-ribbon::after{animation:none}}
 @media print{body{padding-top:0}.nora-ribbon{display:none!important}}
 </style>
-</head>
+<link rel="stylesheet" href="./nora-ui-v3.css?v=3.0.1"/>\n</head>
 <body class="access-locked">
 <div class="nora-ribbon" aria-hidden="true"></div>
 <div aria-labelledby="accessTitle" aria-modal="true" class="access-gate" id="accessGate" role="dialog">
@@ -3501,5 +3501,5 @@ onAuthStateChanged(auth, async (user) => {
 
 window.addEventListener("online",()=>setSyncStatus(currentUser?"online":"offline",currentUser?"متصل":"بانتظار الدخول"));
 window.addEventListener("offline",()=>setSyncStatus("error","دون اتصال"));
-</script></body>
+</script><script src="./nora-ui-v3.js?v=3.0.1" defer></script>\n</body>
 </html>
