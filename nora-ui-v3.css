@@ -10,3 +10,23 @@
 @media (hover:hover) and (pointer:fine){.nora-socials a:hover{transform:translateY(-2px);background:rgba(255,255,255,.13);border-color:rgba(255,255,255,.26)}.nora-handle:hover{text-decoration:underline}}
 @media (max-width:700px){.footer-professional{flex-direction:column;align-items:center}.footer-brand{justify-content:center}.footer-copy{text-align:center}.nora-footer-right{width:100%;justify-content:center;flex-wrap:wrap}}
 @media (prefers-reduced-motion:reduce){.nora-socials a{transition:none!important;transform:none!important}}
+
+/* Footer compact height */
+footer.nora-footer{padding:12px 0!important}
+footer.nora-footer .footer-inner{gap:14px!important;min-height:46px!important}
+footer.nora-footer .footer-brand{gap:10px!important}
+footer.nora-footer .footer-naif-logo{width:92px!important;max-height:44px!important}
+footer.nora-footer .footer-copy{gap:1px!important;line-height:1.35!important}
+footer.nora-footer .footer-copy strong{font-size:13px!important;line-height:1.35!important}
+footer.nora-footer .footer-copy span{font-size:10.5px!important;line-height:1.35!important}
+footer.nora-footer .nora-footer-right{gap:8px!important}
+footer.nora-footer .nora-socials{gap:5px!important}
+footer.nora-footer .nora-socials a{width:32px!important;height:32px!important;border-radius:9px!important}
+footer.nora-footer .nora-socials svg{width:14px!important;height:14px!important}
+footer.nora-footer .nora-handle{font-size:11px!important}
+@media(max-width:700px){
+  footer.nora-footer{padding:10px 0!important}
+  footer.nora-footer .footer-professional{gap:8px!important}
+  footer.nora-footer .footer-naif-logo{width:78px!important;max-height:38px!important}
+  footer.nora-footer .nora-socials a{width:30px!important;height:30px!important}
+}
