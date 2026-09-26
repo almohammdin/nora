@@ -3095,7 +3095,22 @@ function setupActions() {
  const email=$("accessEmail").value.trim(); const password=$("accessPassword").value; const error=$("passwordError"); const button=$("loginBtn");
  error.textContent=""; button.disabled=true; button.textContent="جارٍ الدخول...";
  try { await signInWithEmailAndPassword(auth,email,password); }
- catch (e) { console.error(e); error.textContent = e.code === "auth/invalid-credential" ? "بيانات الدخول غير صحيحة." : e.code === "auth/too-many-requests" ? "محاولات كثيرة؛ أعيدي المحاولة بعد قليل." : "تعذر تسجيل الدخول الآن."; }
+ catch (e) {
+  console.error("Nora sign-in error:", e?.code, e);
+  const loginMessages = {
+    "auth/invalid-credential": "بيانات الدخول غير صحيحة.",
+    "auth/invalid-email": "صيغة البريد الإلكتروني غير صحيحة.",
+    "auth/user-disabled": "هذا الحساب موقوف.",
+    "auth/too-many-requests": "محاولات كثيرة؛ أعيدي المحاولة بعد قليل.",
+    "auth/network-request-failed": "تعذر الاتصال بخدمة تسجيل الدخول. تحققي من الاتصال وحاولي مرة أخرى.",
+    "auth/operation-not-allowed": "خدمة تسجيل الدخول بالبريد وكلمة المرور غير مفعلة حاليا.",
+    "auth/app-not-authorized": "تعذر السماح لهذا الموقع باستخدام خدمة تسجيل الدخول.",
+    "auth/invalid-api-key": "تعذر الاتصال بخدمة تسجيل الدخول.",
+    "auth/api-key-not-valid.-please-pass-a-valid-api-key.": "تعذر الاتصال بخدمة تسجيل الدخول.",
+    "auth/internal-error": "حدث خطأ مؤقت في خدمة تسجيل الدخول. حاولي مرة أخرى."
+  };
+  error.textContent = loginMessages[e?.code] || "تعذر تسجيل الدخول الآن.";
+}
  finally { button.disabled=false; button.textContent="دخول"; }
  });
  $("signOutBtn").addEventListener("click", () => signOut(auth));
