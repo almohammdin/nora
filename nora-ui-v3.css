@@ -30,3 +30,12 @@ footer.nora-footer .nora-handle{font-size:11px!important}
   footer.nora-footer .footer-naif-logo{width:78px!important;max-height:38px!important}
   footer.nora-footer .nora-socials a{width:30px!important;height:30px!important}
 }
+
+/* Direct Nora logo — no white plate */
+.hero-logo{
+  padding:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  filter:drop-shadow(0 8px 18px rgba(111,69,88,.10));
+}
