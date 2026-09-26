@@ -216,6 +216,64 @@
     });
   }
 
+  function enhanceDateFields(root = document) {
+    const inputs = [...root.querySelectorAll('input[type="date"]:not([data-nora-date-enhanced])')];
+    inputs.forEach(input => {
+      input.dataset.noraDateEnhanced = '1';
+
+      const shell = document.createElement('span');
+      shell.className = 'nora-date-shell';
+      input.parentNode.insertBefore(shell, input);
+      shell.appendChild(input);
+
+      const display = document.createElement('span');
+      display.className = 'nora-date-display';
+      display.setAttribute('aria-hidden', 'true');
+
+      const icon = document.createElement('span');
+      icon.className = 'nora-date-icon';
+      icon.setAttribute('aria-hidden', 'true');
+      icon.innerHTML = '<svg viewBox="0 0 24 24"><path d="M6 3v3m12-3v3M4 9h16M5 5h14a2 2 0 0 1 2 2v13H3V7a2 2 0 0 1 2-2Z"/></svg>';
+
+      shell.append(display, icon);
+
+      const update = () => {
+        const value = input.value;
+        if (value && /^\d{4}-\d{2}-\d{2}$/.test(value)) {
+          const [year, month, day] = value.split('-');
+          display.textContent = `${day} / ${month} / ${year}`;
+          display.dir = 'ltr';
+          display.dataset.hasValue = 'true';
+        } else {
+          display.textContent = 'يوم / شهر / سنة';
+          display.dir = 'rtl';
+          display.dataset.hasValue = 'false';
+        }
+      };
+
+      input.addEventListener('input', update);
+      input.addEventListener('change', update);
+      input.addEventListener('focus', update);
+      input.addEventListener('blur', update);
+      update();
+    });
+  }
+
+  function observeDateFields() {
+    enhanceDateFields();
+    if (!('MutationObserver' in window)) return;
+    const observer = new MutationObserver(records => {
+      records.forEach(record => {
+        record.addedNodes.forEach(node => {
+          if (!(node instanceof Element)) return;
+          if (node.matches?.('input[type="date"]')) enhanceDateFields(node.parentElement || document);
+          else if (node.querySelector?.('input[type="date"]')) enhanceDateFields(node);
+        });
+      });
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+  }
+
   function openFromHash() {
     const id = location.hash.replace('#', '');
     if (!id || id === 'dashboard') return;
@@ -229,5 +287,6 @@
   makeSectionsFocusMode();
   buildJourney();
   addReveal();
+  observeDateFields();
   openFromHash();
 })();
