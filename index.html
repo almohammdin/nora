@@ -3433,7 +3433,7 @@ function ensureDashboardCardInteractions() {
 function ensureDashboardQuickAdd() {
  const type=$('dashboardQuickType'),title=$('dashboardQuickTitle'),date=$('dashboardQuickDate'),time=$('dashboardQuickTime'),save=$('dashboardQuickSave'),hint=$('dashboardQuickHint');
  if(!save||save.dataset.bound)return; save.dataset.bound='1';
- const update=()=>{const isTask=type.value==='task';time.closest('.field').style.display=isTask?'none':'';hint.textContent=isTask?'المهمة الجديدة ترتبط تلقائيا بالمرحلة الحالية.':'الموعد يضاف مباشرة إلى التقويم الأكاديمي والبحثي.';};
+ const update=()=>{const isTask=type.value==='task';time.closest('.field').style.display=isTask?'none':'';hint.textContent='';};
  type.addEventListener('change',update);update();
  save.addEventListener('click',()=>{
    const name=title.value.trim(); if(!name){showToast('اكتبي عنوان الإضافة');title.focus();return;}
