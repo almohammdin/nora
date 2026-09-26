@@ -40,18 +40,6 @@ footer.nora-footer .nora-handle{font-size:11px!important}
   filter:drop-shadow(0 8px 18px rgba(111,69,88,.10));
 }
 
-/* Date fields: keep Arabic native date text readable inside RTL UI */
-input[type="date"]{
-  direction:rtl!important;
-  text-align:right!important;
-  unicode-bidi:normal!important;
-}
-input[type="date"]::-webkit-datetime-edit,
-input[type="date"]::-webkit-date-and-time-value{
-  direction:rtl!important;
-  text-align:right!important;
-}
-
 /* Transparent Nora logo */
 .access-logo,
 .hero-logo{
@@ -61,3 +49,51 @@ input[type="date"]::-webkit-date-and-time-value{
   padding:0!important;
   border-radius:0!important;
 }
+
+/* Consistent date control — browser keeps the picker, Nora owns the visible text */
+.nora-date-shell{position:relative;display:block;width:100%;min-width:0}
+.nora-date-shell>input[type="date"]{
+  width:100%;
+  color:transparent!important;
+  -webkit-text-fill-color:transparent!important;
+  caret-color:transparent!important;
+  background:rgba(255,255,255,.92)!important;
+}
+.nora-date-shell>input[type="date"]::-webkit-datetime-edit,
+.nora-date-shell>input[type="date"]::-webkit-date-and-time-value{opacity:0!important}
+.nora-date-shell>input[type="date"]::-webkit-calendar-picker-indicator{
+  opacity:.001;
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  cursor:pointer;
+}
+.nora-date-display{
+  position:absolute;
+  inset:0 46px 0 12px;
+  z-index:2;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  pointer-events:none;
+  color:#8b7a84;
+  font:500 16px "Readex Pro","El Messiri",sans-serif;
+  white-space:nowrap;
+}
+.nora-date-display[data-has-value="true"]{color:var(--ink);font-family:Arial,sans-serif;font-variant-numeric:tabular-nums}
+.nora-date-icon{
+  position:absolute;
+  left:14px;
+  top:50%;
+  transform:translateY(-50%);
+  z-index:2;
+  width:20px;
+  height:20px;
+  color:#191919;
+  pointer-events:none;
+}
+.nora-date-icon svg{display:block;width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.nora-date-shell:focus-within>input[type="date"]{border-color:#bd879b!important;box-shadow:0 0 0 3px rgba(197,141,160,.14)!important}
+.stage-item-top>.nora-date-shell{min-width:0}
+@media(max-width:680px){.stage-item-top>.nora-date-shell{grid-column:2 / 4}}
