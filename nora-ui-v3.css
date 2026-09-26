@@ -40,19 +40,19 @@ footer.nora-footer .nora-handle{font-size:11px!important}
   filter:drop-shadow(0 8px 18px rgba(111,69,88,.10));
 }
 
-/* Date fields: native controls must stay LTR inside the RTL interface */
+/* Date fields: keep Arabic native date text readable inside RTL UI */
 input[type="date"]{
-  direction:ltr!important;
-  text-align:left!important;
-  unicode-bidi:plaintext;
+  direction:rtl!important;
+  text-align:right!important;
+  unicode-bidi:normal!important;
 }
 input[type="date"]::-webkit-datetime-edit,
 input[type="date"]::-webkit-date-and-time-value{
-  direction:ltr!important;
-  text-align:left!important;
+  direction:rtl!important;
+  text-align:right!important;
 }
 
-/* Make the embedded white logo plate visually disappear on tinted backgrounds */
+/* Transparent Nora logo */
 .access-logo,
 .hero-logo{
   background:transparent!important;
@@ -60,5 +60,4 @@ input[type="date"]::-webkit-date-and-time-value{
   border:0!important;
   padding:0!important;
   border-radius:0!important;
-  mix-blend-mode:multiply;
 }
