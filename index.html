@@ -1873,7 +1873,7 @@ body{padding-top:var(--nora-ribbon-height);max-width:100%;overflow-x:hidden}
 @media(prefers-reduced-motion:reduce){.nora-ribbon::after{animation:none}}
 @media print{body{padding-top:0}.nora-ribbon{display:none!important}}
 </style>
-<link rel="stylesheet" href="./nora-ui-v3.css?v=3.0.3"/>
+<link rel="stylesheet" href="./nora-ui-v3.css?v=3.0.4"/>
 </head>
 <body class="access-locked">
 <div class="nora-ribbon" aria-hidden="true"></div>
@@ -2775,21 +2775,22 @@ function openTasks() {
 }
 
 function upcomingItems() {
- const today = new Date();
+ const now = new Date();
+ const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
  const end = new Date(today);
  end.setDate(end.getDate() + 7);
  const items = [];
  state.tasks.forEach((task) => {
  const date = toDate(task.due);
- if (date && task.status !== "مكتملة" && date <= end) items.push({ kind: "مهمة", title: task.title, subtitle: task.stage, date, overdue: dateKey(date) < dateKey(today) });
+ if (date && task.status !== "مكتملة" && date >= today && date <= end) items.push({ kind: "مهمة", title: task.title, subtitle: task.stage, date, overdue: false });
  });
  state.events.forEach((event) => {
  const date = toDate(event.date, event.time);
- if (date && date <= end && date >= new Date(today.getFullYear(), today.getMonth(), today.getDate())) items.push({ kind: event.type, title: event.title, subtitle: event.notes, date, overdue: false });
+ if (date && date >= today && date <= end) items.push({ kind: event.type, title: event.title, subtitle: event.notes, date, overdue: false });
  });
  state.meetings.forEach((meeting) => {
  const date = toDate(meeting.date, meeting.time);
- if (date && date <= end && date >= new Date(today.getFullYear(), today.getMonth(), today.getDate())) items.push({ kind: "اجتماع", title: meeting.agenda || "اجتماع المشرف", subtitle: meeting.decisions, date, overdue: false });
+ if (date && date >= today && date <= end) items.push({ kind: "اجتماع", title: meeting.agenda || "اجتماع المشرف", subtitle: meeting.decisions, date, overdue: false });
  });
  return items.sort((a,b) => a.date - b.date).slice(0, 8);
 }
@@ -3492,7 +3493,7 @@ function periodChartBuckets() {
  return buckets.map((bucket)=>{const previousStart=new Date(bucket.start.getTime()-shift),previousEnd=new Date(bucket.end.getTime()-shift);const tasks=state.tasks.filter((task)=>task.status==='مكتملة'&&Number(task.updatedAt||0)>=bucket.start.getTime()&&Number(task.updatedAt||0)<bucket.end.getTime()),previousTasks=state.tasks.filter((task)=>task.status==='مكتملة'&&Number(task.updatedAt||0)>=previousStart.getTime()&&Number(task.updatedAt||0)<previousEnd.getTime());return {...bucket,previousStart,previousEnd,count:tasks.length,previousCount:previousTasks.length,tasks,previousTasks};});
 }
 
-function periodUpcomingItems() {const cfg=dashboardPeriodConfig(),items=[],today=new Date();today.setHours(0,0,0,0);state.tasks.forEach((task)=>{const date=toDate(task.due);if(date&&task.status!=='مكتملة'&&((date>=cfg.start&&date<cfg.end)||date<today))items.push({kind:'مهمة',title:task.title,subtitle:task.stage,date,overdue:date<today});});state.events.forEach((event)=>{const date=toDate(event.date,event.time);if(date&&date>=cfg.start&&date<cfg.end)items.push({kind:event.type,title:event.title,subtitle:event.notes,date,overdue:false});});state.meetings.forEach((meeting)=>{const date=toDate(meeting.date,meeting.time);if(date&&date>=cfg.start&&date<cfg.end)items.push({kind:'اجتماع',title:meeting.agenda||'اجتماع المشرف',subtitle:meeting.decisions,date,overdue:false});});return items.sort((a,b)=>(b.overdue-a.overdue)||(a.date-b.date)).slice(0,5);}
+function periodUpcomingItems() {const cfg=dashboardPeriodConfig(),items=[],today=new Date();today.setHours(0,0,0,0);const start=cfg.start>today?cfg.start:today;state.tasks.forEach((task)=>{const date=toDate(task.due);if(date&&task.status!=='مكتملة'&&date>=start&&date<cfg.end)items.push({kind:'مهمة',title:task.title,subtitle:task.stage,date,overdue:false});});state.events.forEach((event)=>{const date=toDate(event.date,event.time);if(date&&date>=start&&date<cfg.end)items.push({kind:event.type,title:event.title,subtitle:event.notes,date,overdue:false});});state.meetings.forEach((meeting)=>{const date=toDate(meeting.date,meeting.time);if(date&&date>=start&&date<cfg.end)items.push({kind:'اجتماع',title:meeting.agenda||'اجتماع المشرف',subtitle:meeting.decisions,date,overdue:false});});return items.sort((a,b)=>a.date-b.date).slice(0,5);}
 
 function renderChartClickDetail(index) {
  const item=dashboardChartBucketsCache[index],host=$('dashboardChartDetail');if(!item||!host)return;
