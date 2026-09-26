@@ -39,3 +39,26 @@ footer.nora-footer .nora-handle{font-size:11px!important}
   box-shadow:none!important;
   filter:drop-shadow(0 8px 18px rgba(111,69,88,.10));
 }
+
+/* Date fields: native controls must stay LTR inside the RTL interface */
+input[type="date"]{
+  direction:ltr!important;
+  text-align:left!important;
+  unicode-bidi:plaintext;
+}
+input[type="date"]::-webkit-datetime-edit,
+input[type="date"]::-webkit-date-and-time-value{
+  direction:ltr!important;
+  text-align:left!important;
+}
+
+/* Make the embedded white logo plate visually disappear on tinted backgrounds */
+.access-logo,
+.hero-logo{
+  background:transparent!important;
+  box-shadow:none!important;
+  border:0!important;
+  padding:0!important;
+  border-radius:0!important;
+  mix-blend-mode:multiply;
+}
