@@ -140,7 +140,7 @@
     journey.className = 'nora-journey';
     journey.innerHTML = `
       <div class="nora-journey-head">
-        <div><h3>مسار الرسالة</h3><p>صورة سريعة لمكانك الآن، بدون فتح كل تفاصيل الصفحة.</p></div>
+        <div><h3>مسار الرسالة</h3></div>
         <button class="nora-journey-replay" type="button">إعادة الحركة</button>
       </div>
       <div class="nora-journey-track" aria-label="مسار تقدم الرسالة">
