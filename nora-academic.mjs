@@ -1,8 +1,8 @@
-import { PROGRAM, SEMESTERS, ELECTIVES, OPPORTUNITIES, UNIVERSITY_RESOURCES } from './nora-academic-data.mjs?v=3';
+import { PROGRAM, SEMESTERS, ELECTIVES, OPPORTUNITIES, UNIVERSITY_RESOURCES } from './nora-academic-data.mjs?v=4';
 
 export const COURSE_STATUSES = ['غير محددة', 'لم تبدأ', 'أدرسها', 'اجتزتها'];
 export const PARTICIPATION_STATUSES = ['', 'مهتمة', 'أجهز المشاركة', 'قدمت', 'مقبولة', 'اعتذرت'];
-const CATEGORIES = { paper: 'ورقة أو ملصق علمي', innovation: 'ابتكار وريادة أعمال', development: 'تطوير مهني ومعارض' };
+const CATEGORIES = { paper: 'ورقة بحثية أو بوستر علمي', innovation: 'ابتكار وريادة أعمال', development: 'تطوير مهني ومعارض' };
 const INSTITUTION_FILTERS = { saudi: 'كل الجامعات السعودية', public: 'جامعات سعودية حكومية', private: 'جامعات سعودية أهلية', independent: 'جهات جامعية سعودية مستقلة' };
 const courses = SEMESTERS.flatMap(s => s.courses);
 const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -129,7 +129,7 @@ export function setupAcademicUI({ getState, save, refresh, toast }) {
     <details class="academic-document"><summary>عرض الخطة الأصلية داخل المساحة</summary><p><a href="${PROGRAM.source}" download>تنزيل ملف الخطة الدراسية PDF</a></p><iframe src="${PROGRAM.source}" title="الخطة الدراسية الأصلية لبرنامج القيادة التعليمية" loading="lazy"></iframe></details>`;
 
   opportunities.innerHTML = `<div class="section-head"><div><h2>فرص النشر والمشاركة</h2><p>مؤتمرات ومعارض ومسابقات وفرص تطوير مهني.</p></div><span class="academic-verification">آخر تحقق: <bdi>${dateText(PROGRAM.verifiedAt)}</bdi></span></div>
-    <div class="academic-opportunity-intro panel"><div><h3>مسارات المشاركة</h3><p>قدّمي بحثًا أو ملصقًا علميًا، أو شاركي بفكرة مبتكرة، أو اختاري فعالية للتطوير المهني.</p></div><a class="btn btn-soft btn-small" href="#calendar">التقويم</a></div>
+    <div class="academic-opportunity-intro panel"><div><h3>مسارات المشاركة</h3><p>قدّمي ورقة بحثية أو عرضًا بحثيًا (بوسترًا علميًا)، أو شاركي بفكرة مبتكرة، أو اختاري فعالية للتطوير المهني.</p></div><a class="btn btn-soft btn-small" href="#calendar">التقويم</a></div>
     <div class="academic-filters panel"><div class="field"><label for="opportunityCity">المدينة</label><select id="opportunityCity"><option value="">كل المدن</option>${[...new Set([...OPPORTUNITIES, ...UNIVERSITY_RESOURCES].map(o => o.city))].map(city => `<option>${esc(city)}</option>`).join('')}</select></div>
     <div class="field"><label for="opportunityInstitution">الجهة</label><select id="opportunityInstitution"><option value="">كل الجهات</option>${Object.entries(INSTITUTION_FILTERS).map(([id,title]) => `<option value="${id}">${title}</option>`).join('')}</select></div>
     <div class="field"><label for="opportunityView">العرض</label><select id="opportunityView"><option value="">فعاليات ومصادر</option><option value="events">الفعاليات المؤرخة</option><option value="resources">المراكز ومصادر التطوير</option></select></div>
