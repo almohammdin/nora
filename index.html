@@ -2434,6 +2434,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/fireba
 import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
 import { getDatabase, ref, onValue, set, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-database.js";
 import { getAI, getGenerativeModel, GoogleAIBackend } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-ai.js";
+import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app-check.js";
 import { normalizeAcademic, setupAcademicUI, academicContext, allDayRange, allDayIcs } from "./nora-academic.mjs?v=6";
 import { setupTaskUI, normalizeTaskGrouping, taskGroup, taskContext } from "./nora-tasks.mjs?v=1";
 
@@ -2448,7 +2449,22 @@ const firebaseConfig = {
  measurementId: "G-2C3GC9XEXP"
 };
 
+const FIREBASE_APP_CHECK_SITE_KEY = "";
+
+// Firebase App Check will be mandatory for Firebase AI Logic starting 2026-11-02.
+// Configure the public reCAPTCHA Enterprise site key from Firebase Console.
+// Initialization must happen before Firebase services are used.
 const app = initializeApp(firebaseConfig);
+
+if (FIREBASE_APP_CHECK_SITE_KEY.trim()) {
+ initializeAppCheck(app, {
+  provider: new ReCaptchaEnterpriseProvider(FIREBASE_APP_CHECK_SITE_KEY.trim()),
+  isTokenAutoRefreshEnabled: true
+ });
+} else {
+ console.warn("[Firebase App Check] reCAPTCHA Enterprise site key is not configured yet.");
+}
+
 const auth = getAuth(app);
 const db = getDatabase(app);
 let aiModel = null;
