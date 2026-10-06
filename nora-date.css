@@ -7,3 +7,8 @@
 #todayLabel .today-card-calendar{border-inline-start:1px solid #eadfe6;padding-inline-start:18px}
 #todayLabel .today-card-value{font-size:14px;font-weight:600;color:#57394d;white-space:nowrap}
 @media(max-width:600px){#todayLabel{display:grid;grid-template-columns:36px minmax(0,1fr);gap:10px 12px;width:100%;padding:14px}#todayLabel .today-card-calendar{grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:baseline;gap:10px;border-inline-start:0;border-top:1px solid #eadfe6;padding-inline-start:0;padding-top:9px}#todayLabel .today-card-value{font-size:13px;white-space:normal}}
+@property --nora-date-glow-angle{syntax:"<angle>";inherits:false;initial-value:0deg}
+#todayLabel{position:relative;isolation:isolate}
+#todayLabel::before{content:"";position:absolute;inset:-2px;border-radius:20px;padding:2px;pointer-events:none;background:conic-gradient(from var(--nora-date-glow-angle),transparent 68%,#38bdf8 78%,#a78bfa 88%,#2dd4bf 96%,transparent 100%);-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;filter:drop-shadow(0 0 4px #38bdf850);animation:noraDateFrameOrbit 9s linear infinite}
+@keyframes noraDateFrameOrbit{to{--nora-date-glow-angle:360deg}}
+@media(prefers-reduced-motion:reduce){#todayLabel::before{animation:none;background:linear-gradient(110deg,#38bdf870,#a78bfa70,#2dd4bf70);filter:none}}
