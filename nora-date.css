@@ -1,0 +1,9 @@
+#todayLabel{display:flex;align-items:center;flex-wrap:wrap;gap:18px;max-width:100%;width:fit-content;padding:14px 18px;background:#fff;border:1px solid #ddcfd9;border-radius:18px;box-shadow:0 5px 18px #67445b0c;color:#57394d;line-height:1.65}
+#todayLabel .today-card-icon{display:grid;place-items:center;width:36px;height:36px;flex-shrink:0;border-radius:11px;background:#f3e8ef;color:#795269}
+#todayLabel svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+#todayLabel .today-card-day,#todayLabel .today-card-calendar{display:grid;gap:3px;min-width:0}
+#todayLabel .today-card-caption{font-size:11px;font-weight:500;color:#806777}
+#todayLabel .today-card-day strong{font-size:17px;font-weight:700;color:#57394d}
+#todayLabel .today-card-calendar{border-inline-start:1px solid #eadfe6;padding-inline-start:18px}
+#todayLabel .today-card-value{font-size:14px;font-weight:600;color:#57394d;white-space:nowrap}
+@media(max-width:600px){#todayLabel{display:grid;grid-template-columns:36px minmax(0,1fr);gap:10px 12px;width:100%;padding:14px}#todayLabel .today-card-calendar{grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:baseline;gap:10px;border-inline-start:0;border-top:1px solid #eadfe6;padding-inline-start:0;padding-top:9px}#todayLabel .today-card-value{font-size:13px;white-space:normal}}

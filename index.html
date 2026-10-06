@@ -1876,6 +1876,7 @@ body{padding-top:var(--nora-ribbon-height);max-width:100%;overflow-x:hidden}
 <link rel="stylesheet" href="./nora-ui-v3.css?v=3.0.5"/>
 <link rel="stylesheet" href="./nora-academic.css?v=4"/>
 <link rel="stylesheet" href="./nora-tasks.css?v=1"/>
+<link rel="stylesheet" href="./nora-date.css?v=1"/>
 </head>
 <body class="access-locked">
 <div class="nora-ribbon" aria-hidden="true"></div>
@@ -1953,7 +1954,7 @@ body{padding-top:var(--nora-ribbon-height);max-width:100%;overflow-x:hidden}
 <div class="calm-dashboard-shell">
 <div class="calm-dashboard-header">
 <div class="calm-dashboard-heading">
-<span class="dashboard-date calm-date" id="todayLabel"></span>
+<span class="dashboard-date calm-date" id="todayLabel" role="group" aria-label="تاريخ اليوم"></span>
 <div class="calm-title-row">
 <div class="calm-title-mark" aria-hidden="true">
 <svg viewBox="0 0 24 24"><path d="M4 19V9m5 10V5m5 14v-7m5 7V3M3 21h18"/></svg>
@@ -2635,7 +2636,10 @@ function formatTodayLabel(date) {
  }).format(date);
  const hijri = formatCalendarDateParts(date, "islamic-umalqura");
  const gregorian = formatCalendarDateParts(date, "gregory");
- return `<span>اليوم ${escapeHtml(weekday)}</span><span aria-hidden="true" class="date-divider">|</span><span>${escapeHtml(hijri)}هـ</span><span aria-hidden="true" class="date-divider">|</span><span>${escapeHtml(gregorian)}م</span>`;
+ return `<span class="today-card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 3v4m10-4v4M4 10h16M5 5h14a1 1 0 0 1 1 1v14H4V6a1 1 0 0 1 1-1Z"/><path d="M8 14h2m4 0h2M8 17h2"/></svg></span>
+ <span class="today-card-day"><span class="today-card-caption">اليوم</span><strong>${escapeHtml(weekday)}</strong></span>
+ <span class="today-card-calendar"><span class="today-card-caption">التاريخ الهجري</span><bdi class="today-card-value">${escapeHtml(hijri)} هـ</bdi></span>
+ <span class="today-card-calendar"><span class="today-card-caption">التاريخ الميلادي</span><bdi class="today-card-value">${escapeHtml(gregorian)} م</bdi></span>`;
 }
 
 function formatDate(dateValue, options = {}) {
