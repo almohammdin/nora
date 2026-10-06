@@ -1875,6 +1875,7 @@ body{padding-top:var(--nora-ribbon-height);max-width:100%;overflow-x:hidden}
 </style>
 <link rel="stylesheet" href="./nora-ui-v3.css?v=3.0.5"/>
 <link rel="stylesheet" href="./nora-academic.css?v=4"/>
+<link rel="stylesheet" href="./nora-tasks.css?v=1"/>
 </head>
 <body class="access-locked">
 <div class="nora-ribbon" aria-hidden="true"></div>
@@ -2106,15 +2107,20 @@ body{padding-top:var(--nora-ribbon-height);max-width:100%;overflow-x:hidden}
 </div>
 </section><section id="tasks">
 <div class="section-head">
-<div><h2><span aria-hidden="true" class="section-title-icon"><svg viewBox="0 0 24 24"><path d="M9 6h11M9 12h11M9 18h11M4 6.2l1.2 1.2L7.7 5M4 12.2l1.2 1.2L7.7 11M4 18.2l1.2 1.2L7.7 17" /></svg></span><span>إدارة المهام</span></h2><p>كل مهمة مرتبطة بمرحلة ومخرج وموعد وحالة تنفيذ واضحة.</p></div>
+<div><h2><span aria-hidden="true" class="section-title-icon"><svg viewBox="0 0 24 24"><path d="M9 6h11M9 12h11M9 18h11M4 6.2l1.2 1.2L7.7 5M4 12.2l1.2 1.2L7.7 11M4 18.2l1.2 1.2L7.7 17" /></svg></span><span>إدارة المهام</span></h2><p id="taskSectionDescription">كل مهمة مرتبطة بمرحلة ومخرج وموعد وحالة تنفيذ واضحة.</p></div>
 <span class="autosave-label">حفظ سحابي تلقائي</span>
 </div>
+<div class="task-group-navigation" id="taskGroupNavigation" role="group" aria-label="أقسام المهام"></div>
+<div class="task-subject-navigation" id="taskSubjectNavigation" role="group" aria-label="مواد التكاليف" hidden></div>
+<div class="task-participation-filters" id="taskParticipationFilters" hidden><label for="taskParticipationFilter">عرض مهام مشاركة محددة</label><select id="taskParticipationFilter"><option value="">كل المشاركات</option></select></div>
 <div class="panel task-form-panel">
+<h3 class="task-context-heading" id="taskContextHeading">مهام الرسالة</h3>
 <input id="taskEditId" type="hidden"/>
 <div class="form-grid form-grid-4">
-<div class="field field-span-2"><label for="taskTitle">اسم المهمة</label><input id="taskTitle" placeholder="مثال: مراجعة صياغة مشكلة الدراسة"/></div>
-<div class="field"><label for="taskStage">المرحلة</label><select id="taskStage"></select></div>
-<div class="field"><label for="taskDue">تاريخ الاستحقاق</label><input id="taskDue" type="date"/></div>
+<div class="field field-span-2"><label for="taskTitle" id="taskTitleLabel">اسم المهمة</label><input id="taskTitle" placeholder="مثال: مراجعة صياغة مشكلة الدراسة"/></div>
+<div class="field" id="taskStageField"><label for="taskStage">المرحلة</label><select id="taskStage"></select></div>
+<div class="field" id="taskParticipationField" hidden><label for="taskParticipation">اسم المشاركة</label><input id="taskParticipation" list="taskParticipationSuggestions" placeholder="المؤتمر أو الهاكاثون"/><datalist id="taskParticipationSuggestions"></datalist></div>
+<div class="field"><label for="taskDue" id="taskDueLabel">تاريخ الاستحقاق</label><input id="taskDue" type="date"/></div>
 <div class="field"><label for="taskPriority">الأولوية</label><select id="taskPriority"><option>عالية</option><option selected="">متوسطة</option><option>منخفضة</option></select></div>
 <div class="field"><label for="taskStatus">الحالة</label><select id="taskStatus"><option>لم تبدأ</option><option>قيد التنفيذ</option><option>بانتظار المشرف</option><option>تحتاج تعديل</option><option>معتمدة</option><option>مكتملة</option></select></div>
 <div class="field field-span-2"><label for="taskOutput">المخرج المطلوب</label><input id="taskOutput" placeholder="ملف، فصل، جدول، قرار، أو نسخة معتمدة"/></div>
@@ -2125,7 +2131,7 @@ body{padding-top:var(--nora-ribbon-height);max-width:100%;overflow-x:hidden}
 <div class="panel list-panel">
 <div class="task-toolbar">
 <div class="toolbar-group grow"><input class="compact-input" id="taskSearch" placeholder="بحث في المهام"/><select class="compact-input" id="taskFilter"><option value="all">جميع الحالات</option><option>لم تبدأ</option><option>قيد التنفيذ</option><option>بانتظار المشرف</option><option>تحتاج تعديل</option><option>معتمدة</option><option>مكتملة</option></select></div>
-<div class="counter"><strong id="taskCount">0</strong> مهمة</div>
+<div class="counter"><strong id="taskCount">0</strong> <span id="taskCountLabel">مهمة</span></div>
 </div>
 <div class="task-list" id="taskList"></div>
 </div>
@@ -2427,7 +2433,8 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/fireba
 import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
 import { getDatabase, ref, onValue, set, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-database.js";
 import { getAI, getGenerativeModel, GoogleAIBackend } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-ai.js";
-import { normalizeAcademic, setupAcademicUI, academicContext, allDayRange, allDayIcs } from "./nora-academic.mjs?v=5";
+import { normalizeAcademic, setupAcademicUI, academicContext, allDayRange, allDayIcs } from "./nora-academic.mjs?v=6";
+import { setupTaskUI, normalizeTaskGrouping, taskGroup, taskContext } from "./nora-tasks.mjs?v=1";
 
 const firebaseConfig = {
  apiKey: "AIzaSyAiLZh1SaB4bwk5kCdAulB_c96b5xcXCN4",
@@ -2513,7 +2520,7 @@ function initialState() {
  automation: { stipend: true, academic: true, weeklyReport: true, monthlyBackup: true, booksReminderDate: "" },
  aiHistory: [],
  aiChatHistory: [],
- meta: { version: 7, createdAt: Date.now() }
+ meta: { version: 8, createdAt: Date.now() }
  };
 }
 
@@ -2537,7 +2544,7 @@ function normalizeState(raw) {
  return merged;
  });
  normalized.studies = Array.isArray(raw.studies) ? raw.studies.map((item) => ({ ...newStudy(), ...item, createdAt: Number(item.createdAt || 0) })) : [];
- normalized.tasks = Array.isArray(raw.tasks) ? raw.tasks.map((item) => ({ ...newTask(), ...item })) : [];
+ normalized.tasks = Array.isArray(raw.tasks) ? raw.tasks.map((item) => normalizeTaskGrouping({ ...newTask(), ...item })) : [];
  normalized.events = Array.isArray(raw.events) ? raw.events.map((item) => ({ ...newEvent(), ...item })) : [];
  normalized.meetings = Array.isArray(raw.meetings) ? raw.meetings.map((item) => ({ ...newMeeting(), ...item })) : [];
  normalized.decisions = Array.isArray(raw.decisions) ? raw.decisions : [];
@@ -2545,7 +2552,7 @@ function normalizeState(raw) {
  normalized.automation = { ...base.automation, ...(raw.automation || {}) };
  normalized.aiHistory = Array.isArray(raw.aiHistory) ? raw.aiHistory.slice(-12) : [];
  normalized.aiChatHistory = Array.isArray(raw.aiChatHistory) ? raw.aiChatHistory.slice(-8).map((item) => ({ user:String(item?.user || "").slice(0,4000), assistant:String(item?.assistant || "").slice(0,6000), mode:item?.mode || "fast", createdAt:Number(item?.createdAt || 0) })) : [];
- normalized.meta = { ...base.meta, ...(raw.meta || {}), version: 7 };
+ normalized.meta = { ...base.meta, ...(raw.meta || {}), version: 8 };
  return normalized;
 }
 
@@ -2696,7 +2703,7 @@ async function saveRemoteNow(message = "تمت المزامنة") {
 
 function queueSave(message = "تم الحفظ") {
  if (applyingRemote) return;
- state.meta = { ...(state.meta || {}), version: 7, lastLocalChange: Date.now() };
+ state.meta = { ...(state.meta || {}), version: 8, lastLocalChange: Date.now() };
  persistLocal();
  refreshDerivedUI();
  clearTimeout(saveTimer);
@@ -2756,7 +2763,7 @@ function newStudy() {
 }
 
 function newTask() {
- return { id: uid(), title: "", stage: stagesDefault[0].title, due: "", priority: "متوسطة", status: "لم تبدأ", output: "", notes: "", createdAt: Date.now(), updatedAt: Date.now() };
+ return { id: uid(), title: "", group: "thesis", subject: "", participation: "", stage: stagesDefault[0].title, due: "", priority: "متوسطة", status: "لم تبدأ", output: "", notes: "", createdAt: Date.now(), updatedAt: Date.now() };
 }
 
 function newEvent() {
@@ -2792,7 +2799,7 @@ function upcomingItems() {
  const items = [];
  state.tasks.forEach((task) => {
  const date = toDate(task.due);
- if (date && task.status !== "مكتملة" && date >= today && date <= end) items.push({ kind: "مهمة", title: task.title, subtitle: task.stage, date, overdue: false });
+ if (date && task.status !== "مكتملة" && date >= today && date <= end) items.push({ kind: "مهمة", title: task.title, subtitle: taskContext(task), date, overdue: false });
  });
  state.events.forEach((event) => {
  const date = toDate(event.date, event.time);
@@ -2966,49 +2973,10 @@ function updateQuestionScore() {
  $("questionScore").textContent = `${Math.round((checked / criteriaDefault.length) * 100)}%`;
 }
 
-function taskFormValues() {
- return { title: $("taskTitle").value.trim(), stage: $("taskStage").value, due: $("taskDue").value, priority: $("taskPriority").value, status: $("taskStatus").value, output: $("taskOutput").value.trim(), notes: $("taskNotes").value.trim() };
-}
-
-function resetTaskForm() {
- $("taskEditId").value = ""; $("taskTitle").value = ""; $("taskDue").value = ""; $("taskPriority").value = "متوسطة"; $("taskStatus").value = "لم تبدأ"; $("taskOutput").value = ""; $("taskNotes").value = "";
- $("saveTaskBtn").textContent = "إضافة المهمة"; $("cancelTaskEditBtn").classList.add("hidden");
-}
-
-function renderTasks() {
- const search = $("taskSearch").value.trim().toLowerCase();
- const filter = $("taskFilter").value;
- const today = dateKey(new Date());
- const filtered = state.tasks.filter((task) => (filter === "all" || (filter === "open" ? task.status !== "مكتملة" : task.status === filter)) && (!search || `${task.title} ${task.stage} ${task.output} ${task.notes}`.toLowerCase().includes(search)))
- .sort((a,b) => (a.status === "مكتملة") - (b.status === "مكتملة") || (a.due || "9999").localeCompare(b.due || "9999"));
- $("taskCount").textContent = state.tasks.length;
- $("taskList").innerHTML = filtered.length ? filtered.map((task) => {
- const overdue = task.due && task.due < today && task.status !== "مكتملة";
- return `<article class="task-card ${task.status === "مكتملة" ? "done" : ""}" data-id="${task.id}"><div><div class="task-title-row"><h3>${escapeHtml(task.title || "مهمة بلا عنوان")}</h3><span class="meta-pill ${task.priority === "عالية" ? "high" : ""}">${escapeHtml(task.priority)}</span>${overdue ? '<span class="meta-pill overdue">متأخرة</span>' : ""}</div><div class="task-meta"><span class="meta-pill">${escapeHtml(task.stage)}</span>${task.due ? `<span class="meta-pill">${formatDate(task.due,{year:"numeric"})}</span>` : ""}</div>${task.output ? `<div class="task-output"><strong>المخرج:</strong> ${escapeHtml(task.output)}</div>` : ""}${task.notes ? `<div class="task-notes">${escapeHtml(task.notes)}</div>` : ""}</div><div class="task-actions"><select class="inline-status" data-action="status">${["لم تبدأ","قيد التنفيذ","بانتظار المشرف","تحتاج تعديل","معتمدة","مكتملة"].map((s)=>`<option ${task.status===s?"selected":""}>${s}</option>`).join("")}</select><button class="btn btn-outline btn-small" data-action="edit" type="button">تعديل</button><button class="btn btn-danger btn-small" data-action="delete" type="button">حذف</button></div></article>`;
- }).join("") : '<div class="empty-state">لا توجد مهام مطابقة. أضيفي أول مهمة من النموذج أعلاه.</div>';
-
- $("taskList").querySelectorAll(".task-card").forEach((card) => {
- const task = state.tasks.find((item) => item.id === card.dataset.id);
- card.querySelector('[data-action="status"]').addEventListener("change", (event) => { task.status = event.target.value; task.updatedAt = Date.now(); queueSave("تم تحديث حالة المهمة"); renderTasks(); });
- card.querySelector('[data-action="edit"]').addEventListener("click", () => { $("taskEditId").value = task.id; $("taskTitle").value = task.title; $("taskStage").value = task.stage; $("taskDue").value = task.due; $("taskPriority").value = task.priority; $("taskStatus").value = task.status; $("taskOutput").value = task.output; $("taskNotes").value = task.notes; $("saveTaskBtn").textContent = "حفظ التعديل"; $("cancelTaskEditBtn").classList.remove("hidden"); $("taskTitle").focus(); document.querySelector("#tasks").scrollIntoView({behavior:"smooth"}); });
- card.querySelector('[data-action="delete"]').addEventListener("click", () => { if (confirm("حذف هذه المهمة؟")) { state.tasks = state.tasks.filter((item) => item.id !== task.id); queueSave("تم حذف المهمة"); renderTasks(); } });
- });
-}
-
-function addOrUpdateTask() {
- const values = taskFormValues();
- if (!values.title) { showToast("اكتبي اسم المهمة"); $("taskTitle").focus(); return; }
- const editId = $("taskEditId").value;
- if (editId) {
- const task = state.tasks.find((item) => item.id === editId);
- Object.assign(task, values, { updatedAt:Date.now() });
- queueSave("تم تحديث المهمة");
- } else {
- state.tasks.push({ ...newTask(), ...values });
- queueSave("تمت إضافة المهمة");
- }
- resetTaskForm(); renderTasks();
-}
+function taskFormValues() { return taskUI.values(); }
+function resetTaskForm() { taskUI.reset(); }
+function renderTasks() { taskUI.render(); }
+function addOrUpdateTask() { taskUI.saveTask(); }
 
 function googleCalendarUrl(event) {
  if (event.allDay && event.date) {
@@ -3099,7 +3067,7 @@ function icsDate(date,time="") {
 function exportIcs() {
  const records = [];
  state.events.forEach((event) => records.push({ title:event.title, date:event.date, endDate:event.endDate, allDay:event.allDay, time:event.time, notes:event.notes, link:event.link }));
- state.tasks.filter((task)=>task.due && task.status!=="مكتملة").forEach((task) => records.push({ title:`مهمة: ${task.title}`, date:task.due, time:"09:00", notes:`${task.stage}\n${task.output}\n${task.notes}`, link:"" }));
+ state.tasks.filter((task)=>task.due && task.status!=="مكتملة").forEach((task) => records.push({ title:`مهمة: ${task.title}`, date:task.due, time:"09:00", notes:`${taskContext(task)}\n${task.output}\n${task.notes}`, link:"" }));
  state.meetings.forEach((meeting) => records.push({ title:`اجتماع المشرف: ${meeting.agenda}`, date:meeting.date, time:meeting.time || "09:00", notes:`${meeting.notes}\n${meeting.decisions}`, link:"" }));
  const events = records.map((item) => { if(item.allDay) return allDayIcs(item,uid(),new Date().toISOString().replace(/[-:]/g,"").replace(/\.\d{3}/,"")); const start=icsDate(item.date,item.time); const d=toDate(item.date,item.time||"09:00"); const end=new Date(d.getTime()+3600000); const endStamp=`${end.getFullYear()}${String(end.getMonth()+1).padStart(2,"0")}${String(end.getDate()).padStart(2,"0")}T${String(end.getHours()).padStart(2,"0")}${String(end.getMinutes()).padStart(2,"0")}00`; return `BEGIN:VEVENT\nUID:${uid()}@noura-master\nDTSTAMP:${icsDate(dateKey(new Date()),new Date().toTimeString().slice(0,5))}\nDTSTART;TZID=${TIME_ZONE}:${start}\nDTEND;TZID=${TIME_ZONE}:${endStamp}\nSUMMARY:${String(item.title||"").replace(/\n/g," ")}\nDESCRIPTION:${String(item.notes||"").replace(/\n/g,"\\n")}\nURL:${item.link||""}\nEND:VEVENT`; }).join("\n");
  downloadFile("noura-master-calendar.ics", `BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//Noura Master Workspace//AR\nCALSCALE:GREGORIAN\n${events}\nEND:VCALENDAR`, "text/calendar;charset=utf-8");
@@ -3392,7 +3360,7 @@ function ensureOpenTaskFilter() {
 function dashboardCardDetailMarkup(type) {
  if(type==='tasks'){
    const tasks=[...openTasks()].sort((a,b)=>(toDate(a.due)?.getTime()||Infinity)-(toDate(b.due)?.getTime()||Infinity)).slice(0,3);
-   return `<div class="dashboard-detail-list">${tasks.length?tasks.map((task)=>`<label class="dashboard-detail-item"><input type="checkbox" data-dashboard-complete-task="${escapeHtml(task.id)}"><span><strong>${escapeHtml(task.title||'مهمة بلا عنوان')}</strong>${task.due?formatDate(task.due,{year:'numeric'}):'دون تاريخ'} · ${escapeHtml(task.stage||'')}</span></label>`).join(''):'<div class="dashboard-detail-item">لا توجد مهام مفتوحة حاليا.</div>'}</div><div class="dashboard-card-actions"><button class="btn btn-outline btn-small" data-dashboard-view-all="tasks" type="button">عرض الكل</button></div>`;
+   return `<div class="dashboard-detail-list">${tasks.length?tasks.map((task)=>`<label class="dashboard-detail-item"><input type="checkbox" data-dashboard-complete-task="${escapeHtml(task.id)}"><span><strong>${escapeHtml(task.title||'مهمة بلا عنوان')}</strong>${task.due?formatDate(task.due,{year:'numeric'}):'دون تاريخ'} · ${escapeHtml(taskContext(task))}</span></label>`).join(''):'<div class="dashboard-detail-item">لا توجد مهام مفتوحة حاليا.</div>'}</div><div class="dashboard-card-actions"><button class="btn btn-outline btn-small" data-dashboard-view-all="tasks" type="button">عرض الكل</button></div>`;
  }
  if(type==='studies'){
    const studies=[...state.studies].sort((a,b)=>Number(b.createdAt||0)-Number(a.createdAt||0)).slice(0,3);
@@ -3486,7 +3454,7 @@ function ensurePersistentDetailHosts() {
 function renderStageClickDetail(index) {
  const stage=state.stages[index],host=$('dashboardStageDetail');if(!stage||!host)return;
  document.querySelectorAll('#stageProgressBoard .calm-stage-row').forEach((row,i)=>row.classList.toggle('is-selected',i===index));
- const tasks=state.tasks.filter((task)=>task.stage===stage.title).slice(0,8);const pct=Math.max(0,Math.min(100,Number(stage.progress||0)));
+ const tasks=state.tasks.filter((task)=>taskGroup(task)==="thesis"&&task.stage===stage.title).slice(0,8);const pct=Math.max(0,Math.min(100,Number(stage.progress||0)));
  host.hidden=false;host.innerHTML=`<div class="dashboard-detail-head"><div><strong>${escapeHtml(stage.title)}</strong><span>${pct}% إنجاز${stage.due?` · الموعد ${formatDate(stage.due,{year:'numeric'})}`:''}</span></div><button class="btn btn-outline btn-small" data-close-dashboard-detail type="button">إغلاق</button></div><div class="dashboard-detail-tasks">${tasks.length?tasks.map((task)=>`<div class="dashboard-detail-task"><strong>${escapeHtml(task.title||'مهمة بلا عنوان')}</strong><span>${escapeHtml(task.status)}</span></div>`).join(''):'<div class="dashboard-detail-task"><span>لا توجد مهام مرتبطة بهذه المرحلة.</span></div>'}</div>`;
  host.querySelector('[data-close-dashboard-detail]').addEventListener('click',()=>{host.hidden=true;document.querySelectorAll('#stageProgressBoard .calm-stage-row').forEach((row)=>row.classList.remove('is-selected'));});
 }
@@ -3509,12 +3477,12 @@ function periodChartBuckets() {
  return buckets.map((bucket)=>{const previousStart=new Date(bucket.start.getTime()-shift),previousEnd=new Date(bucket.end.getTime()-shift);const tasks=state.tasks.filter((task)=>task.status==='مكتملة'&&Number(task.updatedAt||0)>=bucket.start.getTime()&&Number(task.updatedAt||0)<bucket.end.getTime()),previousTasks=state.tasks.filter((task)=>task.status==='مكتملة'&&Number(task.updatedAt||0)>=previousStart.getTime()&&Number(task.updatedAt||0)<previousEnd.getTime());return {...bucket,previousStart,previousEnd,count:tasks.length,previousCount:previousTasks.length,tasks,previousTasks};});
 }
 
-function periodUpcomingItems() {const cfg=dashboardPeriodConfig(),items=[],today=new Date();today.setHours(0,0,0,0);const start=cfg.start>today?cfg.start:today;state.tasks.forEach((task)=>{const date=toDate(task.due);if(date&&task.status!=='مكتملة'&&date>=start&&date<cfg.end)items.push({kind:'مهمة',title:task.title,subtitle:task.stage,date,overdue:false});});state.events.forEach((event)=>{const date=toDate(event.date,event.time);if(date&&date>=start&&date<cfg.end)items.push({kind:event.type,title:event.title,subtitle:event.notes,date,overdue:false});});state.meetings.forEach((meeting)=>{const date=toDate(meeting.date,meeting.time);if(date&&date>=start&&date<cfg.end)items.push({kind:'اجتماع',title:meeting.agenda||'اجتماع المشرف',subtitle:meeting.decisions,date,overdue:false});});return items.sort((a,b)=>a.date-b.date).slice(0,5);}
+function periodUpcomingItems() {const cfg=dashboardPeriodConfig(),items=[],today=new Date();today.setHours(0,0,0,0);const start=cfg.start>today?cfg.start:today;state.tasks.forEach((task)=>{const date=toDate(task.due);if(date&&task.status!=='مكتملة'&&date>=start&&date<cfg.end)items.push({kind:'مهمة',title:task.title,subtitle:taskContext(task),date,overdue:false});});state.events.forEach((event)=>{const date=toDate(event.date,event.time);if(date&&date>=start&&date<cfg.end)items.push({kind:event.type,title:event.title,subtitle:event.notes,date,overdue:false});});state.meetings.forEach((meeting)=>{const date=toDate(meeting.date,meeting.time);if(date&&date>=start&&date<cfg.end)items.push({kind:'اجتماع',title:meeting.agenda||'اجتماع المشرف',subtitle:meeting.decisions,date,overdue:false});});return items.sort((a,b)=>a.date-b.date).slice(0,5);}
 
 function renderChartClickDetail(index) {
  const item=dashboardChartBucketsCache[index],host=$('dashboardChartDetail');if(!item||!host)return;
  document.querySelectorAll('#tasksSixWeekChart .calm-week-column').forEach((column,i)=>column.classList.toggle('is-selected',i===index));
- host.hidden=false;host.innerHTML=`<div class="dashboard-detail-head"><div><strong>${escapeHtml(item.label)}: ${item.count} مهمة مكتملة</strong><span>${formatDate(item.start,{year:'numeric'})} إلى ${formatDate(new Date(item.end.getTime()-86400000),{year:'numeric'})} · الفترة السابقة ${item.previousCount}</span></div><button class="btn btn-outline btn-small" data-close-dashboard-detail type="button">إغلاق</button></div><div class="dashboard-detail-tasks">${item.tasks.length?item.tasks.map((task)=>`<div class="dashboard-detail-task"><strong>${escapeHtml(task.title||'مهمة بلا عنوان')}</strong><span>${escapeHtml(task.stage||'')}</span></div>`).join(''):'<div class="dashboard-detail-task"><span>لا توجد مهام مكتملة في هذه الفترة.</span></div>'}</div>`;
+ host.hidden=false;host.innerHTML=`<div class="dashboard-detail-head"><div><strong>${escapeHtml(item.label)}: ${item.count} مهمة مكتملة</strong><span>${formatDate(item.start,{year:'numeric'})} إلى ${formatDate(new Date(item.end.getTime()-86400000),{year:'numeric'})} · الفترة السابقة ${item.previousCount}</span></div><button class="btn btn-outline btn-small" data-close-dashboard-detail type="button">إغلاق</button></div><div class="dashboard-detail-tasks">${item.tasks.length?item.tasks.map((task)=>`<div class="dashboard-detail-task"><strong>${escapeHtml(task.title||'مهمة بلا عنوان')}</strong><span>${escapeHtml(taskContext(task))}</span></div>`).join(''):'<div class="dashboard-detail-task"><span>لا توجد مهام مكتملة في هذه الفترة.</span></div>'}</div>`;
  host.querySelector('[data-close-dashboard-detail]').addEventListener('click',()=>{host.hidden=true;document.querySelectorAll('#tasksSixWeekChart .calm-week-column').forEach((column)=>column.classList.remove('is-selected'));});
 }
 
@@ -3531,10 +3499,11 @@ function enhanceDashboardLayer(previousValues={}) {ensureDashboardPeriodFilter()
 const baseRenderDashboard = renderDashboard;
 renderDashboard = function(...args) {const previousValues={};['dashProgress','dashOpenTasks','dashStudies','dashTargetDays'].forEach((id)=>{const element=$(id);previousValues[id]=element?parseInt(element.textContent,10):0;});const result=baseRenderDashboard(...args);requestAnimationFrame(()=>enhanceDashboardLayer(previousValues));return result;};
 
+$("taskStage").innerHTML = stagesDefault.map((stage)=>`<option>${stage.title}</option>`).join("");
+const taskUI = setupTaskUI({ getState: () => state, newTask, save: queueSave, toast: showToast, formatDate, todayKey: () => dateKey(new Date()) });
 setupActions();
 setupResearchAddons();
 const academicUI = setupAcademicUI({ getState: () => state, save: queueSave, refresh: renderAll, toast: showToast });
-$("taskStage").innerHTML = stagesDefault.map((stage)=>`<option>${stage.title}</option>`).join("");
 renderAll();
 
 try { await setPersistence(auth,browserLocalPersistence); } catch (error) { console.warn(error); }

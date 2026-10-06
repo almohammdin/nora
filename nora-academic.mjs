@@ -87,7 +87,7 @@ export function addOpportunityToState(state, opportunity, today = todayKey(), no
   if (events || deadlines.length || opportunity.end >= today) {
     const id = `academic-${opportunity.id}-prepare`;
     if (!state.tasks.some(task => task.id === id)) {
-      state.tasks.push({ id, title: opportunity.action, stage: state.profile?.stage || 'إعداد الخطة', due: deadlines[0]?.date || '',
+      state.tasks.push({ id, title: opportunity.action, group: 'participations', subject: '', participation: opportunity.title, stage: '', due: deadlines[0]?.date || '',
         priority: 'عالية', status: 'لم تبدأ', output: CATEGORIES[opportunity.category],
         notes: `${opportunity.title}\n${opportunity.caution}\n${opportunity.source}\nآخر تحقق: ${opportunity.verifiedAt}`, createdAt: now, updatedAt: now, opportunityId: opportunity.id });
       tasks++;
