@@ -13,6 +13,8 @@
     calendar: 'التقويم',
     meetings: 'اجتماعات المشرف',
     workspace: 'تعريف البحث',
+    'study-plan': 'الخطة الدراسية',
+    opportunities: 'فرص النشر والمشاركة',
     stages: 'مراحل الرسالة',
     'research-discovery': 'اكتشاف الدراسات',
     matrix: 'مصفوفة الدراسات',
@@ -26,6 +28,8 @@
     ['tasks', 'المهام', '#7c3aed'],
     ['research-discovery', 'الدراسات', '#0ea5e9'],
     ['workspace', 'الرسالة', '#14b8a6'],
+    ['study-plan', 'الخطة الدراسية', '#9b6685'],
+    ['opportunities', 'فرص المشاركة', '#73917c'],
     ['meetings', 'المشرف', '#f59e0b'],
     ['calendar', 'المواعيد', '#fb7185'],
     ['ai-assistant', 'مساعد نورة', '#8b5cf6'],
@@ -284,6 +288,12 @@
   }
 
   buildNav();
+  window.addEventListener('nora-academic-ready', () => {
+    ['study-plan', 'opportunities'].forEach(id => {
+      const section = document.getElementById(id);
+      if (section) ensureHeader(section, id);
+    });
+  });
   makeSectionsFocusMode();
   buildJourney();
   addReveal();

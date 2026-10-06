@@ -1874,6 +1874,7 @@ body{padding-top:var(--nora-ribbon-height);max-width:100%;overflow-x:hidden}
 @media print{body{padding-top:0}.nora-ribbon{display:none!important}}
 </style>
 <link rel="stylesheet" href="./nora-ui-v3.css?v=3.0.5"/>
+<link rel="stylesheet" href="./nora-academic.css?v=1"/>
 </head>
 <body class="access-locked">
 <div class="nora-ribbon" aria-hidden="true"></div>
@@ -2178,7 +2179,10 @@ body{padding-top:var(--nora-ribbon-height);max-width:100%;overflow-x:hidden}
 <div class="form-actions"><button class="btn btn-dark" id="addMeetingBtn" type="button">حفظ الاجتماع</button></div>
 </div>
 <div class="meeting-list" id="meetingList"></div>
-</section><section id="workspace">
+</section>
+<section id="study-plan" dir="rtl" lang="ar-SA"></section>
+<section id="opportunities" dir="rtl" lang="ar-SA"></section>
+<section id="workspace">
 <div class="section-head">
 <div>
 <h2><span aria-hidden="true" class="section-title-icon"><svg viewBox="0 0 24 24"><path d="M6 2h9l4 4v16H6V2Zm9 0v5h5M9 11h7m-7 4h7m-7 4h5" /></svg></span><span>تعريف البحث</span></h2>
@@ -2187,6 +2191,7 @@ body{padding-top:var(--nora-ribbon-height);max-width:100%;overflow-x:hidden}
 <button class="btn btn-soft btn-small" id="saveProfileBtn">حفظ الآن</button>
 </div>
 <div class="panel research-summary">
+<div class="academic-profile-program">جامعة الملك عبدالعزيز · كلية التربية · ماجستير القيادة التعليمية بالمقررات والرسالة</div>
 <div class="grid-2">
 <div class="field" style="grid-column:1/-1">
 <label for="researchTitle">عنوان البحث المبدئي</label>
@@ -2200,6 +2205,7 @@ body{padding-top:var(--nora-ribbon-height);max-width:100%;overflow-x:hidden}
 <label for="researchField">المجال الدقيق</label>
 <select id="researchField">
 <option value="">اختيار المجال</option>
+<option>القيادة التعليمية</option>
 <option>الإدارة والقيادة</option>
 <option>الإدارة العامة</option>
 <option>الموارد البشرية</option>
@@ -2421,6 +2427,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/fireba
 import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
 import { getDatabase, ref, onValue, set, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-database.js";
 import { getAI, getGenerativeModel, GoogleAIBackend } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-ai.js";
+import { normalizeAcademic, setupAcademicUI, academicContext, allDayRange, allDayIcs } from "./nora-academic.mjs?v=1";
 
 const firebaseConfig = {
  apiKey: "AIzaSyAiLZh1SaB4bwk5kCdAulB_c96b5xcXCN4",
@@ -2493,7 +2500,8 @@ function uid() {
 
 function initialState() {
  return {
- profile: { title: "", problem: "", field: "", stage: "اختيار الموضوع", targetDate: "", supervisorNote: "" },
+ profile: { title: "", problem: "", field: "القيادة التعليمية", stage: "اختيار الموضوع", targetDate: "", supervisorNote: "" },
+ academic: normalizeAcademic(),
  stages: structuredClone(stagesDefault),
  studies: [],
  question: { text: "", notes: "", checks: criteriaDefault.map(() => false) },
@@ -2505,7 +2513,7 @@ function initialState() {
  automation: { stipend: true, academic: true, weeklyReport: true, monthlyBackup: true, booksReminderDate: "" },
  aiHistory: [],
  aiChatHistory: [],
- meta: { version: 6, createdAt: Date.now() }
+ meta: { version: 7, createdAt: Date.now() }
  };
 }
 
@@ -2514,6 +2522,7 @@ function normalizeState(raw) {
  if (!raw || typeof raw !== "object") return base;
  const normalized = { ...base, ...raw };
  normalized.profile = { ...base.profile, ...(raw.profile || {}) };
+ normalized.academic = normalizeAcademic(raw.academic);
  normalized.question = { ...base.question, ...(raw.question || {}) };
  normalized.question.checks = criteriaDefault.map((_, i) => Boolean(raw.question?.checks?.[i]));
  normalized.stages = stagesDefault.map((stage, i) => {
@@ -2536,7 +2545,7 @@ function normalizeState(raw) {
  normalized.automation = { ...base.automation, ...(raw.automation || {}) };
  normalized.aiHistory = Array.isArray(raw.aiHistory) ? raw.aiHistory.slice(-12) : [];
  normalized.aiChatHistory = Array.isArray(raw.aiChatHistory) ? raw.aiChatHistory.slice(-8).map((item) => ({ user:String(item?.user || "").slice(0,4000), assistant:String(item?.assistant || "").slice(0,6000), mode:item?.mode || "fast", createdAt:Number(item?.createdAt || 0) })) : [];
- normalized.meta = { ...base.meta, ...(raw.meta || {}), version: 6 };
+ normalized.meta = { ...base.meta, ...(raw.meta || {}), version: 7 };
  return normalized;
 }
 
@@ -2556,7 +2565,8 @@ function hasMeaningfulData(value) {
  return Boolean(
  value.profile?.title || value.profile?.problem || value.profile?.targetDate ||
  value.studies?.length || value.tasks?.length || value.events?.length || value.meetings?.length ||
- value.stages?.some((stage) => Number(stage.progress || 0) > 0 || stage.due)
+ value.stages?.some((stage) => Number(stage.progress || 0) > 0 || stage.due) ||
+ Object.keys(value.academic?.courseProgress || {}).length || Object.keys(value.academic?.courseSelections || {}).length || Object.keys(value.academic?.opportunityProgress || {}).length
  );
 }
 
@@ -2686,7 +2696,7 @@ async function saveRemoteNow(message = "تمت المزامنة") {
 
 function queueSave(message = "تم الحفظ") {
  if (applyingRemote) return;
- state.meta = { ...(state.meta || {}), version: 3, lastLocalChange: Date.now() };
+ state.meta = { ...(state.meta || {}), version: 7, lastLocalChange: Date.now() };
  persistLocal();
  refreshDerivedUI();
  clearTimeout(saveTimer);
@@ -3001,6 +3011,10 @@ function addOrUpdateTask() {
 }
 
 function googleCalendarUrl(event) {
+ if (event.allDay && event.date) {
+ const params = new URLSearchParams({ action:"TEMPLATE", text:event.title, dates:allDayRange(event.date,event.endDate || event.date).join("/"), details:event.notes || "", location:event.link || "" });
+ return `https://calendar.google.com/calendar/render?${params.toString()}`;
+ }
  const start = toDate(event.date, event.time || "09:00");
  if (!start) return "https://calendar.google.com/calendar/u/0/r";
  const end = new Date(start.getTime() + 60 * 60 * 1000);
@@ -3062,6 +3076,7 @@ function renderAll() {
  renderMeetings();
  renderResearchAddons();
  renderSmartAlerts();
+ academicUI.render();
  refreshDerivedUI();
 }
 
@@ -3083,10 +3098,10 @@ function icsDate(date,time="") {
 
 function exportIcs() {
  const records = [];
- state.events.forEach((event) => records.push({ title:event.title, date:event.date, time:event.time, notes:event.notes, link:event.link }));
+ state.events.forEach((event) => records.push({ title:event.title, date:event.date, endDate:event.endDate, allDay:event.allDay, time:event.time, notes:event.notes, link:event.link }));
  state.tasks.filter((task)=>task.due && task.status!=="مكتملة").forEach((task) => records.push({ title:`مهمة: ${task.title}`, date:task.due, time:"09:00", notes:`${task.stage}\n${task.output}\n${task.notes}`, link:"" }));
  state.meetings.forEach((meeting) => records.push({ title:`اجتماع المشرف: ${meeting.agenda}`, date:meeting.date, time:meeting.time || "09:00", notes:`${meeting.notes}\n${meeting.decisions}`, link:"" }));
- const events = records.map((item) => { const start=icsDate(item.date,item.time); const d=toDate(item.date,item.time||"09:00"); const end=new Date(d.getTime()+3600000); const endStamp=`${end.getFullYear()}${String(end.getMonth()+1).padStart(2,"0")}${String(end.getDate()).padStart(2,"0")}T${String(end.getHours()).padStart(2,"0")}${String(end.getMinutes()).padStart(2,"0")}00`; return `BEGIN:VEVENT\nUID:${uid()}@noura-master\nDTSTAMP:${icsDate(dateKey(new Date()),new Date().toTimeString().slice(0,5))}\nDTSTART;TZID=${TIME_ZONE}:${start}\nDTEND;TZID=${TIME_ZONE}:${endStamp}\nSUMMARY:${String(item.title||"").replace(/\n/g," ")}\nDESCRIPTION:${String(item.notes||"").replace(/\n/g,"\\n")}\nURL:${item.link||""}\nEND:VEVENT`; }).join("\n");
+ const events = records.map((item) => { if(item.allDay) return allDayIcs(item,uid(),new Date().toISOString().replace(/[-:]/g,"").replace(/\.\d{3}/,"")); const start=icsDate(item.date,item.time); const d=toDate(item.date,item.time||"09:00"); const end=new Date(d.getTime()+3600000); const endStamp=`${end.getFullYear()}${String(end.getMonth()+1).padStart(2,"0")}${String(end.getDate()).padStart(2,"0")}T${String(end.getHours()).padStart(2,"0")}${String(end.getMinutes()).padStart(2,"0")}00`; return `BEGIN:VEVENT\nUID:${uid()}@noura-master\nDTSTAMP:${icsDate(dateKey(new Date()),new Date().toTimeString().slice(0,5))}\nDTSTART;TZID=${TIME_ZONE}:${start}\nDTEND;TZID=${TIME_ZONE}:${endStamp}\nSUMMARY:${String(item.title||"").replace(/\n/g," ")}\nDESCRIPTION:${String(item.notes||"").replace(/\n/g,"\\n")}\nURL:${item.link||""}\nEND:VEVENT`; }).join("\n");
  downloadFile("noura-master-calendar.ics", `BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//Noura Master Workspace//AR\nCALSCALE:GREGORIAN\n${events}\nEND:VCALENDAR`, "text/calendar;charset=utf-8");
 }
 
@@ -3186,7 +3201,7 @@ async function searchOpenAlex() {
 }
 function renderOpenAlexResults(){const host=$("openAlexResults");host.innerHTML=openAlexRecords.length?openAlexRecords.map((r,i)=>`<article class="research-result-card" data-index="${i}"><h4>${escapeHtml(r.title||"دراسة بلا عنوان")}</h4><div class="result-meta"><span class="mini-chip">${escapeHtml(String(r.year||"غير محدد"))}</span><span class="mini-chip">استشهادات ${Number(r.cited||0).toLocaleString("en-US")}</span>${r.oaUrl?'<span class="mini-chip">نص مفتوح</span>':''}</div><p>${escapeHtml(r.authors||"مؤلفون غير متاحين")}</p><p>${escapeHtml(r.journal||"")}</p><div class="addon-actions"><button class="btn btn-primary btn-small" data-openalex-add="${i}" type="button">إضافة للمصفوفة</button>${r.url?`<a class="btn btn-outline btn-small" href="${safeUrl(r.url)}" target="_blank" rel="noopener">فتح الدراسة</a>`:""}${r.oaUrl?`<a class="btn btn-outline btn-small" href="${safeUrl(r.oaUrl)}" target="_blank" rel="noopener">النص المفتوح</a>`:""}</div></article>`).join(""):'<div class="addon-result">لا توجد نتائج للعرض.</div>';host.querySelectorAll('[data-openalex-add]').forEach(b=>b.addEventListener('click',()=>addBibliographicStudy(openAlexRecords[Number(b.dataset.openalexAdd)],"OpenAlex")));}
 function buildAiPrompt(tool,input){
- const context={title:state.profile.title,problem:state.profile.problem,field:state.profile.field,stage:state.profile.stage,question:state.question.text,supervisorNote:state.profile.supervisorNote,tasks:state.tasks.slice(-12),meetings:state.meetings.slice(-4),studies:state.studies.slice(-10)};
+ const context={academic:academicContext(state),title:state.profile.title,problem:state.profile.problem,field:state.profile.field,stage:state.profile.stage,question:state.question.text,supervisorNote:state.profile.supervisorNote,tasks:state.tasks.slice(-12),meetings:state.meetings.slice(-4),studies:state.studies.slice(-10)};
  const recent=(state.aiHistory||[]).slice(-6).map((item,index)=>`${index+1}) ${item.tool}${item.mode?` · ${item.mode}`:""}: ${String(item.preview||"").slice(0,180)}`).join("\n");
  const chatMemory=(state.aiChatHistory||[]).slice(-6).map((item,index)=>`المحادثة ${index+1}:\nالمستخدمة: ${String(item.user||"").slice(0,4000)}\nالمساعد: ${String(item.assistant||"").slice(0,6000)}`).join("\n\n");
  const compactContext=JSON.stringify(context);
@@ -3194,7 +3209,7 @@ function buildAiPrompt(tool,input){
  const lengthRule = tool === "study" ? "أعد JSON صالحا فقط بلا شرح." : (activeAiMode === "fast" ? (isChat ? "أجب بالحجم المناسب للسؤال وبلا حشو." : "اجعل الإجابة في حدود 700 رمز تقريبا وبلا حشو.") : "اذكر خلاصة مركزة ثم قائمة مصادر مختصرة في النهاية.");
  const sourceRule = activeAiMode === "grounded" ? "استخدم البحث الموثق بالمصادر عندما يحتاج السؤال معلومات خارجية أو حديثة، واذكر المصادر بوضوح." : (isChat ? "استخدم معرفتك العامة وسياق المساحة دون بحث خارجي، ووضح عدم اليقين عند الحاجة." : "اعتمد على نص المستخدم وسياق المساحة فقط دون بحث خارجي.");
  const researchRules=`أنت مساعد بحثي عربي لطالبة ماجستير. لغة واضحة ومباشرة. لا تختلق مراجع أو DOI أو نتائج. ${lengthRule} ${sourceRule} في الردود النصية اختم بعبارة: مسودة مقترحة تحتاج مراجعة الباحثة.`;
- const chatRules=`أنت مساعد نورة الذكي، مساعد ذكاء اصطناعي عام داخل مساحة باحثة ماجستير. أجب مباشرة عن سؤال المستخدمة بوضوح ودقة. استفد من سياق الرسالة والمهام والدراسات المحفوظة عندما تكون ذات صلة، ولا تحول السؤال إلى تحسين صياغة أو تحليل دراسة أو تقرير إلا إذا طلبت المستخدمة ذلك صراحة. افهم أسئلة المتابعة مثل: اختصر الإجابة السابقة، أو وضح النقطة الأخيرة، بالاعتماد على ذاكرة المحادثة. ${lengthRule} ${sourceRule} لا تختلق حقائق أو مصادر.`;
+ const chatRules=`أنت مساعد نورة الذكي، مساعد ذكاء اصطناعي عام داخل مساحة باحثة ماجستير. أجب مباشرة عن سؤال المستخدمة بوضوح ودقة. استفد من سياق الرسالة والمهام والدراسات المحفوظة عندما تكون ذات صلة، ولا تحول السؤال إلى تحسين صياغة أو تحليل دراسة أو تقرير إلا إذا طلبت المستخدمة ذلك صراحة. افهم أسئلة المتابعة مثل: اختصر الإجابة السابقة، أو وضح النقطة الأخيرة، بالاعتماد على ذاكرة المحادثة. ${lengthRule} ${sourceRule} لا تختلق حقائق أو مصادر. استند إلى حقائق البرنامج والخطة والفرص في academic عند صلتها بالسؤال، وميز المادة الدراسية المترجمة عن الرسالة والورقة الأصلية، ولا تفترض اجتياز مقرر أو قبول مشاركة. مواعيد الفرص لقطة مؤرخة؛ راجع مصادرها عند السؤال عن الوضع الحالي.`;
  const prompts={
  chat:`سياق مساحة الرسالة عند الحاجة فقط:\n${compactContext}\n\nذاكرة المحادثة العامة السابقة:\n${chatMemory || "لا توجد محادثة سابقة"}\n\nسؤال المستخدمة الحالي:\n${input}`,
  rewrite:`حسّن الصياغة الأكاديمية للنص التالي مع المحافظة على المعنى وتقليل التكرار:\n${input}`,
@@ -3517,6 +3532,7 @@ renderDashboard = function(...args) {const previousValues={};['dashProgress','da
 
 setupActions();
 setupResearchAddons();
+const academicUI = setupAcademicUI({ getState: () => state, save: queueSave, refresh: renderAll, toast: showToast });
 $("taskStage").innerHTML = stagesDefault.map((stage)=>`<option>${stage.title}</option>`).join("");
 renderAll();
 
@@ -3529,6 +3545,6 @@ onAuthStateChanged(auth, async (user) => {
 
 window.addEventListener("online",()=>setSyncStatus(currentUser?"online":"offline",currentUser?"متصل":"بانتظار الدخول"));
 window.addEventListener("offline",()=>setSyncStatus("error","دون اتصال"));
-</script><script src="./nora-ui-v3.js?v=3.0.2" defer></script>
+</script><script src="./nora-ui-v3.js?v=3.0.3" defer></script>
 </body>
 </html>

@@ -1,0 +1,88 @@
+/* Academic sections follow the site's palette and semantic RTL. */
+.academic-program,.academic-opportunity-intro{display:flex;gap:24px;align-items:center;justify-content:space-between;background:linear-gradient(120deg,#fff9f4,#f8eef4)!important;border:1px solid #e8d3de!important}
+.academic-opportunity-intro>div{min-width:0;flex:1}
+.academic-opportunity-intro>.btn{width:auto!important;min-width:0!important;flex:0 0 auto}
+.academic-program h3,.academic-opportunity-intro h3{font-size:1.22rem;margin:7px 0 10px;color:#573446}
+.academic-eyebrow,.academic-organizer{color:#716473;font-size:.84rem}
+.academic-program p,.academic-opportunity-intro p{line-height:1.9;margin:0;color:#6e6170}
+.academic-unit-total{display:grid;text-align:center;flex:0 0 110px;color:#734459;border-inline-start:1px solid #e5ccd7;padding-inline-start:24px}
+.academic-unit-total strong{font:700 2.6rem 'Readex Pro',sans-serif}
+.academic-unit-total span{font-size:.8rem}
+.academic-progress{display:grid;grid-template-columns:1fr 2fr 1fr;gap:24px;align-items:center;margin-top:16px}
+.academic-progress>div:not(.academic-progress-track){display:grid;gap:6px}
+.academic-progress strong{font-size:1.4rem;color:#5c3850}
+.academic-progress span{font-size:.82rem;color:#716473}
+.academic-progress-track{display:flex;align-items:center;gap:12px}
+.academic-progress progress{width:100%;height:10px;appearance:none;border:0;border-radius:99px;overflow:hidden;background:#f1e5ed}
+.academic-progress progress::-webkit-progress-bar{background:#f1e5ed;border-radius:99px}
+.academic-progress progress::-webkit-progress-value{background:#9b6685;border-radius:99px}
+.academic-progress progress::-moz-progress-bar{background:#9b6685;border-radius:99px}
+.academic-note{color:#716473;font-size:.86rem;line-height:1.9;margin:16px 2px}
+.academic-semesters{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.academic-semester{min-width:0;padding:20px!important;margin:0!important}
+.academic-semester:last-child{grid-column:1/-1}
+.academic-semester-head{display:flex;align-items:start;justify-content:space-between;gap:15px;border-bottom:1px solid #eadde5;padding-bottom:12px;margin-bottom:6px}
+.academic-semester-head h3{font-size:1rem;line-height:1.6;margin:0;color:#5b3b50}
+.academic-semester-head>span{font-size:.76rem;white-space:nowrap;border-radius:99px;background:#f3e8ef;color:#7a4a65;padding:5px 10px}
+.academic-course{display:grid;grid-template-columns:minmax(0,1fr) auto 124px;gap:14px;align-items:center;padding-block:17px;border-bottom:1px solid #f0e6ed}
+.academic-course:last-child{border:0;padding-bottom:3px}
+.academic-course-name{min-width:0}
+.academic-course h4{font-size:.91rem;line-height:1.8;margin:4px 0 0;font-weight:500}
+.academic-course-code{font-size:.72rem;letter-spacing:.03em;color:#847088}
+.academic-course-kind{display:block;font-size:.78rem;color:#857086;margin-bottom:6px}
+.academic-course-units{font-size:.74rem;color:#847088;white-space:nowrap}
+.academic-course-status label{display:block;font-size:.69rem;color:#887689;line-height:1.6;margin-bottom:5px}
+.academic-course select{width:100%;font-size:.77rem;padding:8px!important;min-height:38px;max-width:100%}
+.academic-prerequisite{font-size:.73rem;color:#777076;line-height:1.6;margin:6px 0 0}
+.academic-document{margin-top:18px;padding:18px;border:1px solid #e6d7e2;border-radius:18px;background:#fff}
+.academic-document summary,.academic-opportunity-details summary{cursor:pointer;font-weight:500;line-height:1.7}
+.academic-document iframe{width:100%;height:580px;border:1px solid #ece3e9;border-radius:10px}
+.academic-document a,.academic-source-links a{color:#7b4c6b;text-decoration:underline;text-underline-offset:3px;font-size:.82rem}
+.academic-verification{font-size:.75rem;color:#826b7c;background:#f3e8ef;padding:8px 12px;border-radius:99px;white-space:nowrap}
+.academic-filters{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:16px}
+.academic-filters .field{margin:0!important}
+.academic-filters label{font-size:.8rem}
+.academic-saved-filter{grid-column:1/-1;display:flex;gap:9px;align-items:center;color:#68526a}
+.academic-saved-filter input{width:18px;height:18px;accent-color:#925777}
+.academic-result-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:20px 0 12px}
+.academic-result-heading strong{color:#5d3b52;font-size:.95rem}
+.academic-result-heading span{color:#817284;font-size:.75rem}
+.academic-opportunity-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;align-items:start}
+.academic-opportunity{min-width:0;background:#fff;border:1px solid #e5d7e2;border-radius:22px;padding:23px;box-shadow:0 5px 18px #734b6410}
+.academic-card-tags{display:flex;flex-wrap:wrap;gap:7px;font-size:.71rem}
+.academic-card-tags span{border-radius:99px;background:#f4eef5;padding:6px 10px;color:#76627a}
+.academic-card-tags .academic-category-paper{background:#eee6f6;color:#73558b}
+.academic-card-tags .academic-category-innovation{background:#e9f3ed;color:#4d7762}
+.academic-card-tags .academic-category-development{background:#fbf0e3;color:#9b764e}
+.academic-opportunity h3{font-size:1.13rem;line-height:1.7;color:#4f354b;margin:16px 0 5px}
+.academic-organizer{line-height:1.8;margin:0 0 14px}
+.academic-event-date{display:grid;gap:5px;border-block:1px solid #eee3eb;padding:12px 0}
+.academic-event-date span{font-size:.73rem;color:#8a7989}
+.academic-event-date strong{font-size:.85rem;line-height:1.8;font-weight:500;color:#685068}
+.academic-deadlines{margin-top:15px}
+.academic-deadline-badge{display:inline-block;background:#f3edf1;color:#87727e;border-radius:8px;font-size:.71rem;padding:5px 9px}
+.academic-deadline-badge.is-open{background:#f9e5ed;color:#a3446b}
+.academic-deadlines ul{padding:0;list-style:none;margin:10px 0}
+.academic-deadlines li{display:flex;justify-content:space-between;gap:12px;font-size:.76rem;line-height:1.8;padding-block:5px}
+.academic-deadlines li span{color:#6d566d}
+.academic-deadlines li bdi{color:#5f495c;white-space:nowrap}
+.academic-deadlines li.is-past{opacity:.6}
+.academic-deadlines p{font-size:.78rem;color:#806c7d;line-height:1.8}
+.academic-fit,.academic-fee{font-size:.86rem;color:#675b68;line-height:1.9}
+.academic-fit strong,.academic-fee strong{color:#6f4560;font-weight:500}
+.academic-opportunity-details{background:#faf6f9;border-radius:12px;padding:12px 14px;font-size:.82rem;color:#73536d}
+.academic-opportunity-details p{font-size:.8rem;line-height:1.9;margin:12px 0 4px;color:#6d606d}
+.academic-caution{border-inline-start:3px solid #cea27b;padding-inline-start:10px}
+.academic-source-links{display:flex;flex-wrap:wrap;gap:18px;margin-block:16px}
+.academic-card-actions{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:end;border-top:1px solid #eee3eb;padding-top:15px}
+.academic-card-actions .field{margin:0!important}
+.academic-card-actions label{font-size:.75rem}
+.academic-card-actions select{font-size:.82rem;min-height:42px}
+.academic-card-actions button{min-height:42px;line-height:1.7;font-size:.75rem;white-space:normal}
+.academic-card-note{font-size:.68rem;line-height:1.8;color:#938190;margin:12px 0 0}
+.academic-profile-program{padding:12px 16px;margin-bottom:18px;background:#f7f0f5;border-radius:12px;color:#74556e;font-size:.86rem;line-height:1.8}
+.academic-opportunity button:disabled{opacity:.5;cursor:default}
+.visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+@media(max-width:1050px){.academic-semesters{grid-template-columns:1fr}.academic-course{grid-template-columns:minmax(0,1fr) auto 142px}.academic-filters{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:720px){.academic-opportunity-grid{grid-template-columns:1fr}.academic-progress{gap:15px;grid-template-columns:1fr 1fr}.academic-progress-track{grid-column:1/-1;grid-row:2}.academic-program{gap:14px}.academic-unit-total{flex-basis:80px;padding-inline-start:15px}.academic-unit-total strong{font-size:2rem}.academic-program h3{font-size:1.05rem}.academic-unit-total span{font-size:.7rem}.academic-opportunity{padding:19px}.academic-verification{white-space:normal}.academic-result-heading{align-items:start}.academic-result-heading span{max-width:55%;text-align:end}.academic-document iframe{height:450px}}
+@media(max-width:440px){.academic-course{grid-template-columns:minmax(0,1fr) auto;gap:8px 12px}.academic-course-status{grid-column:1/-1;display:flex;gap:12px;align-items:center;justify-content:space-between}.academic-course-status label{font-size:.7rem;max-width:55%;margin:0}.academic-course-status select{width:120px;flex-shrink:0}.academic-filters{gap:12px}.academic-filters .field:last-of-type{grid-column:1/-1}.academic-card-actions{grid-template-columns:1fr}.academic-deadlines li{flex-direction:column;gap:0}.academic-opportunity-intro{align-items:start}.academic-opportunity-intro .btn{flex-shrink:0}.academic-program h3{font-size:.95rem}.academic-eyebrow{font-size:.73rem}}
