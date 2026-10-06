@@ -1,8 +1,8 @@
-import { PROGRAM, SEMESTERS, ELECTIVES, OPPORTUNITIES } from './nora-academic-data.mjs?v=1';
+import { PROGRAM, SEMESTERS, ELECTIVES, OPPORTUNITIES } from './nora-academic-data.mjs?v=2';
 
 export const COURSE_STATUSES = ['غير محددة', 'لم تبدأ', 'أدرسها', 'اجتزتها'];
 export const PARTICIPATION_STATUSES = ['', 'مهتمة', 'أجهز المشاركة', 'قدمت', 'مقبولة', 'اعتذرت'];
-const CATEGORIES = { paper: 'ورقة أو ملصق علمي', innovation: 'ابتكار ومشروع جنى', development: 'تطوير مهني ومعارض' };
+const CATEGORIES = { paper: 'ورقة أو ملصق علمي', innovation: 'ابتكار وريادة أعمال', development: 'تطوير مهني ومعارض' };
 const courses = SEMESTERS.flatMap(s => s.courses);
 const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const dateText = date => date ? new Intl.DateTimeFormat('ar-SA-u-ca-gregory', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Riyadh' }).format(new Date(`${date}T12:00:00+03:00`)) : 'غير معلن';
@@ -91,11 +91,10 @@ export function academicContext(state, today = todayKey()) {
   return {
     program: PROGRAM,
     evidence: {
-      thesis: state.profile?.title || 'عنوان الرسالة غير محدد في المساحة؛ لا تفترض عنوانًا.',
-      coursework: 'المادة المتاحة عرض وترجمة لورقة Cheng, Calhoun & Reedy (2025) عن الكتابة الأكاديمية وأخلاقيات الذكاء الاصطناعي؛ ليست رسالة نورة أو ورقة أصلية لها.',
-      project: 'جنى: فكرة منصة تحول نتائج الأبحاث إلى منتجات تطبيقية ومسار إرشادي ولوحة لقياس الأثر؛ لم يُتحقق من نموذج عامل أو قبول أو فوز.',
-      interests: 'الاهتمام بأخلاقيات الذكاء الاصطناعي وتحويل البحث إلى أثر استنتاج من المواد المتاحة، وليس تخصصًا دقيقًا أو عنوان رسالة معتمدًا.',
-      sourcePolicy: 'الفرص لقطة بتاريخ 6 أكتوبر 2026 وليست متابعة مباشرة؛ تحقق من المصادر الرسمية والمواعيد والرسوم قبل التوصية بالتقديم أو الدفع. الملاءمة تقدير إرشادي، والقبول والنشر غير مضمونين.'
+      thesis: state.profile?.title || '',
+      courseworkExamples: [{ type: 'عرض وترجمة ورقة منشورة لمقرر تقنيات وتطبيقات التعليم', paper: 'Cheng, Calhoun & Reedy (2025)', subject: 'الكتابة الأكاديمية وأخلاقيات الذكاء الاصطناعي' }],
+      projectExamples: [{ name: 'جنى', description: 'فكرة منصة تحول نتائج الأبحاث إلى منتجات تطبيقية ومسار إرشادي ولوحة لقياس الأثر', verifiedStage: 'فكرة؛ النموذج العامل والقبول والفوز غير موثقين في المواد المتاحة' }],
+      opportunitiesVerifiedAt: PROGRAM.verifiedAt
     },
     plan: SEMESTERS.map(s => ({ title: s.title, units: s.units, courses: s.courses.map(c => ({ ...c, selection: academic.courseSelections[c.code] || '', status: academic.courseProgress[c.code] || 'غير محددة' })) })),
     opportunities: OPPORTUNITIES.filter(o => o.end >= today || academic.opportunityProgress[o.id]).map(o => ({ id: o.id, title: o.title, city: o.city,
@@ -113,18 +112,18 @@ export function setupAcademicUI({ getState, save, refresh, toast }) {
   plan.innerHTML = `<div class="section-head"><div><h2>الخطة الدراسية</h2><p>مقررات البرنامج ومتطلباتها، مع متابعة تقدمك الدراسي.</p></div><a class="btn btn-soft btn-small" href="${PROGRAM.source}" target="_blank" rel="noopener">فتح الخطة الأصلية</a></div>
     <div class="academic-program panel"><div><span class="academic-eyebrow">${PROGRAM.university} · ${PROGRAM.faculty}</span><h3>${PROGRAM.name}</h3><p>أربعة فصول: 9 + 9 + 7 + 7 وحدات، والرسالة 10 وحدات.</p></div><div class="academic-unit-total"><strong>42</strong><span>وحدة معتمدة</span></div></div>
     <div id="academicProgress"></div>
-    <p class="academic-note">حددي حالة كل مقرر بحسب سجلك. اختاري اسم المقرر الاختياري قبل احتساب وحداته؛ توزيع الفصل في الخطة لا يثبت أنك درستِه أو اجتزتِه.</p>
+    <p class="academic-note">سجّلي حالة المقررات وحددي المقررات الاختيارية لمتابعة الوحدات المجتازة.</p>
     <div class="academic-semesters" id="academicCourses"></div>
     <details class="academic-document"><summary>عرض الخطة الأصلية داخل المساحة</summary><p><a href="${PROGRAM.source}" download>تنزيل ملف الخطة الدراسية PDF</a></p><iframe src="${PROGRAM.source}" title="الخطة الدراسية الأصلية لبرنامج القيادة التعليمية" loading="lazy"></iframe></details>`;
 
-  opportunities.innerHTML = `<div class="section-head"><div><h2>فرص النشر والمشاركة</h2><p>فرص في الرياض ودبي وقطر والخليج، مرتبطة بالتخصص وفكرة جنى.</p></div><span class="academic-verification">آخر تحقق: <bdi>${dateText(PROGRAM.verifiedAt)}</bdi></span></div>
-    <div class="academic-opportunity-intro panel"><div><h3>اختاري الفرصة ثم جهّزي المشاركة</h3><p>الأوراق والملصقات، ومسابقات جنى، وفرص التطوير المهني لكل منها شروط مختلفة. الملاءمة تقدير يساعدك على الاختيار.</p></div><a class="btn btn-soft btn-small" href="#calendar">التقويم</a></div>
+  opportunities.innerHTML = `<div class="section-head"><div><h2>فرص النشر والمشاركة</h2><p>مؤتمرات ومعارض ومسابقات وفرص تطوير مهني.</p></div><span class="academic-verification">آخر تحقق: <bdi>${dateText(PROGRAM.verifiedAt)}</bdi></span></div>
+    <div class="academic-opportunity-intro panel"><div><h3>مسارات المشاركة</h3><p>قدّمي بحثًا أو ملصقًا علميًا، أو شاركي بفكرة مبتكرة، أو اختاري فعالية للتطوير المهني.</p></div><a class="btn btn-soft btn-small" href="#calendar">التقويم</a></div>
     <div class="academic-filters panel"><div class="field"><label for="opportunityCity">المدينة</label><select id="opportunityCity"><option value="">كل المدن</option>${['الرياض', 'دبي', 'الدوحة', 'مسقط', 'جدة'].map(city => `<option>${city}</option>`).join('')}</select></div>
     <div class="field"><label for="opportunityCategory">نوع المشاركة</label><select id="opportunityCategory"><option value="">كل الأنواع</option>${Object.entries(CATEGORIES).map(([id, title]) => `<option value="${id}">${title}</option>`).join('')}</select></div>
     <div class="field"><label for="opportunityTiming">الفترة</label><select id="opportunityTiming"><option value="upcoming">فعاليات قادمة</option><option value="deadline">موعد تقديم قادم معلن</option><option value="all">كل الفرص</option></select></div>
     <div class="field"><label for="opportunitySearch">البحث</label><input id="opportunitySearch" type="search" placeholder="اسم الفرصة أو موضوعها"/></div>
     <label class="academic-saved-filter"><input type="checkbox" id="opportunitySaved"/>فرصي المختارة فقط</label></div>
-    <p class="academic-note">المعلومات بحسب المصادر وقت التحقق. راجعي المصدر الرسمي قبل التسجيل أو الدفع؛ وجود الفعالية لا يعني استمرار قبول الأوراق.</p>
+    <p class="academic-note">تحققي من المواعيد والرسوم وشروط الجهة قبل التسجيل.</p>
     <div class="academic-result-heading"><strong id="opportunityResultCount" role="status" aria-live="polite"></strong><span>تُرتب حسب أقرب موعد تقديم معلن</span></div>
     <div class="academic-opportunity-grid" id="opportunityCards"></div>`;
 
@@ -162,7 +161,7 @@ export function setupAcademicUI({ getState, save, refresh, toast }) {
       return `<article class="academic-opportunity" data-opportunity="${o.id}"><div class="academic-card-tags"><span>${o.city} · ${o.country}</span><span class="academic-category-${o.category}">${CATEGORIES[o.category]}</span></div>
       <h3>${esc(o.title)}</h3><p class="academic-organizer">${esc(o.organizer)}</p><div class="academic-event-date"><span>${esc(o.format)}</span><strong>${dateText(o.start)}${o.end !== o.start ? ` — ${dateText(o.end)}` : ''}</strong></div>
       <div class="academic-deadlines"><span class="academic-deadline-badge ${next !== '9999' ? 'is-open' : ''}">${badge}</span>${o.deadlines.length ? `<ul>${o.deadlines.map(d => `<li class="${d.date < today ? 'is-past' : ''}"><span>${esc(d.label)}${d.conditional ? ' · بعد القبول' : ''}</span><bdi>${dateText(d.date)}</bdi></li>`).join('')}</ul>` : '<p>راجعي الجهة لتأكيد فتح التسجيل وموعد إغلاقه.</p>'}</div>
-      <p class="academic-fit"><strong>لماذا تناسبك؟</strong> ${esc(o.fit)}</p><p class="academic-fee"><strong>التكلفة:</strong> ${esc(o.fee)}</p>
+      <p class="academic-fit"><strong>مجالات الاستفادة:</strong> ${esc(o.fit)}</p><p class="academic-fee"><strong>التكلفة:</strong> ${esc(o.fee)}</p>
       <details class="academic-opportunity-details"><summary>الشروط وملاحظات التقديم</summary><p>${esc(o.participation)}</p><p class="academic-caution">${esc(o.caution)}</p></details>
       <div class="academic-source-links"><a href="${esc(o.source)}" target="_blank" rel="noopener">المصدر الرسمي ↗</a>${o.secondSource ? `<a href="${esc(o.secondSource)}" target="_blank" rel="noopener">تفاصيل إضافية ↗</a>` : ''}</div>
       <div class="academic-card-actions"><div class="field"><label for="participation-${o.id}">حالة مشاركتي</label><select id="participation-${o.id}" data-participation="${o.id}">${PARTICIPATION_STATUSES.map(s => `<option value="${s}" ${s === status ? 'selected' : ''}>${s || 'لم أحدد بعد'}</option>`).join('')}</select></div><button type="button" class="btn btn-soft btn-small" data-add-opportunity="${o.id}" ${ended ? 'disabled' : ''}>${linked ? 'استكمال المواعيد والمهام' : 'إضافة المواعيد ومهمة التحضير'}</button></div>
