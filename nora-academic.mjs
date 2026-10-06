@@ -1,8 +1,9 @@
-import { PROGRAM, SEMESTERS, ELECTIVES, OPPORTUNITIES } from './nora-academic-data.mjs?v=2';
+import { PROGRAM, SEMESTERS, ELECTIVES, OPPORTUNITIES, UNIVERSITY_RESOURCES } from './nora-academic-data.mjs?v=3';
 
 export const COURSE_STATUSES = ['غير محددة', 'لم تبدأ', 'أدرسها', 'اجتزتها'];
 export const PARTICIPATION_STATUSES = ['', 'مهتمة', 'أجهز المشاركة', 'قدمت', 'مقبولة', 'اعتذرت'];
 const CATEGORIES = { paper: 'ورقة أو ملصق علمي', innovation: 'ابتكار وريادة أعمال', development: 'تطوير مهني ومعارض' };
+const INSTITUTION_FILTERS = { saudi: 'كل الجامعات السعودية', public: 'جامعات سعودية حكومية', private: 'جامعات سعودية أهلية', independent: 'جهات جامعية سعودية مستقلة' };
 const courses = SEMESTERS.flatMap(s => s.courses);
 const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const dateText = date => date ? new Intl.DateTimeFormat('ar-SA-u-ca-gregory', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Riyadh' }).format(new Date(`${date}T12:00:00+03:00`)) : 'غير معلن';
@@ -10,6 +11,16 @@ export function todayKey(now = new Date()) {
   const parts = new Intl.DateTimeFormat('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit', timeZone: 'Asia/Riyadh' }).formatToParts(now);
   const pick = type => parts.find(p => p.type === type).value;
   return `${pick('year')}-${pick('month')}-${pick('day')}`;
+}
+
+export function matchesInstitution(item, filter = '') {
+  if (!filter) return true;
+  if (item.country !== 'السعودية' || !item.institutionType) return false;
+  return filter === 'saudi' || item.institutionType === ({ public: 'حكومية', private: 'أهلية', independent: 'مستقلة' }[filter]);
+}
+
+export function nextOpportunityDeadline(item, today = todayKey()) {
+  return item.deadlines.filter(d => !d.conditional && d.date >= today).map(d => d.date).sort()[0] || '9999';
 }
 
 export function normalizeAcademic(raw = {}) {
@@ -68,7 +79,7 @@ export function addOpportunityToState(state, opportunity, today = todayKey(), no
     const id = `academic-${opportunity.id}-${suffix}`;
     if (state.events.some(event => event.id === id)) return;
     state.events.push({ id, title, type: 'فرصة مشاركة', date, endDate, allDay: true, time: '', link: opportunity.source,
-      notes: `${opportunity.city} · ${opportunity.format}\n${notes}\nالوقت غير معلن؛ الموعد مسجل ليوم كامل.\nالمصدر: ${opportunity.source}\nآخر تحقق: ${opportunity.verifiedAt}`, createdAt: now, opportunityId: opportunity.id });
+      notes: `${opportunity.city} · ${opportunity.format}\n${notes}\nالموعد مسجل ليوم كامل؛ راجعي البرنامج لتوقيت الجلسات.\nالمصدر: ${opportunity.source}\nآخر تحقق: ${opportunity.verifiedAt}`, createdAt: now, opportunityId: opportunity.id });
     events++;
   };
   deadlines.forEach(d => addEvent(d.date + '-deadline', `${d.label}: ${opportunity.title}`, d.date, d.date, d.conditional ? 'خاص بالمشاركات المقبولة.' : 'راجعي شروط الجهة قبل التقديم.'));
@@ -97,7 +108,8 @@ export function academicContext(state, today = todayKey()) {
       opportunitiesVerifiedAt: PROGRAM.verifiedAt
     },
     plan: SEMESTERS.map(s => ({ title: s.title, units: s.units, courses: s.courses.map(c => ({ ...c, selection: academic.courseSelections[c.code] || '', status: academic.courseProgress[c.code] || 'غير محددة' })) })),
-    opportunities: OPPORTUNITIES.filter(o => o.end >= today || academic.opportunityProgress[o.id]).map(o => ({ id: o.id, title: o.title, city: o.city,
+    universityResources: UNIVERSITY_RESOURCES,
+    opportunities: OPPORTUNITIES.filter(o => o.end >= today || academic.opportunityProgress[o.id]).map(o => ({ id: o.id, title: o.title, city: o.city, institutionType: o.institutionType, availability: o.availability,
       category: CATEGORIES[o.category], start: o.start, end: o.end, deadlines: o.deadlines, fee: o.fee, participation: o.participation,
       fit: o.fit, caution: o.caution, source: o.source, verifiedAt: o.verifiedAt, status: academic.opportunityProgress[o.id] || 'لم تُحدد مشاركة' }))
   };
@@ -107,7 +119,7 @@ export function setupAcademicUI({ getState, save, refresh, toast }) {
   const plan = document.getElementById('study-plan');
   const opportunities = document.getElementById('opportunities');
   if (!plan || !opportunities) return { render() {} };
-  const filters = { city: '', category: '', timing: 'upcoming', saved: false, text: '' };
+  const filters = { city: '', category: '', institution: '', view: '', timing: 'upcoming', saved: false, text: '' };
 
   plan.innerHTML = `<div class="section-head"><div><h2>الخطة الدراسية</h2><p>مقررات البرنامج ومتطلباتها، مع متابعة تقدمك الدراسي.</p></div><a class="btn btn-soft btn-small" href="${PROGRAM.source}" target="_blank" rel="noopener">فتح الخطة الأصلية</a></div>
     <div class="academic-program panel"><div><span class="academic-eyebrow">${PROGRAM.university} · ${PROGRAM.faculty}</span><h3>${PROGRAM.name}</h3><p>أربعة فصول: 9 + 9 + 7 + 7 وحدات، والرسالة 10 وحدات.</p></div><div class="academic-unit-total"><strong>42</strong><span>وحدة معتمدة</span></div></div>
@@ -118,14 +130,17 @@ export function setupAcademicUI({ getState, save, refresh, toast }) {
 
   opportunities.innerHTML = `<div class="section-head"><div><h2>فرص النشر والمشاركة</h2><p>مؤتمرات ومعارض ومسابقات وفرص تطوير مهني.</p></div><span class="academic-verification">آخر تحقق: <bdi>${dateText(PROGRAM.verifiedAt)}</bdi></span></div>
     <div class="academic-opportunity-intro panel"><div><h3>مسارات المشاركة</h3><p>قدّمي بحثًا أو ملصقًا علميًا، أو شاركي بفكرة مبتكرة، أو اختاري فعالية للتطوير المهني.</p></div><a class="btn btn-soft btn-small" href="#calendar">التقويم</a></div>
-    <div class="academic-filters panel"><div class="field"><label for="opportunityCity">المدينة</label><select id="opportunityCity"><option value="">كل المدن</option>${['الرياض', 'دبي', 'الدوحة', 'مسقط', 'جدة'].map(city => `<option>${city}</option>`).join('')}</select></div>
+    <div class="academic-filters panel"><div class="field"><label for="opportunityCity">المدينة</label><select id="opportunityCity"><option value="">كل المدن</option>${[...new Set([...OPPORTUNITIES, ...UNIVERSITY_RESOURCES].map(o => o.city))].map(city => `<option>${esc(city)}</option>`).join('')}</select></div>
+    <div class="field"><label for="opportunityInstitution">الجهة</label><select id="opportunityInstitution"><option value="">كل الجهات</option>${Object.entries(INSTITUTION_FILTERS).map(([id,title]) => `<option value="${id}">${title}</option>`).join('')}</select></div>
+    <div class="field"><label for="opportunityView">العرض</label><select id="opportunityView"><option value="">فعاليات ومصادر</option><option value="events">الفعاليات المؤرخة</option><option value="resources">المراكز ومصادر التطوير</option></select></div>
     <div class="field"><label for="opportunityCategory">نوع المشاركة</label><select id="opportunityCategory"><option value="">كل الأنواع</option>${Object.entries(CATEGORIES).map(([id, title]) => `<option value="${id}">${title}</option>`).join('')}</select></div>
     <div class="field"><label for="opportunityTiming">الفترة</label><select id="opportunityTiming"><option value="upcoming">فعاليات قادمة</option><option value="deadline">موعد تقديم قادم معلن</option><option value="all">كل الفرص</option></select></div>
     <div class="field"><label for="opportunitySearch">البحث</label><input id="opportunitySearch" type="search" placeholder="اسم الفرصة أو موضوعها"/></div>
     <label class="academic-saved-filter"><input type="checkbox" id="opportunitySaved"/>فرصي المختارة فقط</label></div>
     <p class="academic-note">تحققي من المواعيد والرسوم وشروط الجهة قبل التسجيل.</p>
     <div class="academic-result-heading"><strong id="opportunityResultCount" role="status" aria-live="polite"></strong><span>تُرتب حسب أقرب موعد تقديم معلن</span></div>
-    <div class="academic-opportunity-grid" id="opportunityCards"></div>`;
+    <div class="academic-opportunity-grid" id="opportunityCards"></div>
+    <div id="universityResourceSection"><div class="academic-resource-heading"><h3>مراكز ومصادر التطوير</h3><p>برامج ومصادر جامعية؛ مواعيد الدورات وأهلية التسجيل تُراجع مع الجهة.</p></div><div class="academic-opportunity-grid" id="universityResourceCards"></div></div>`;
 
   window.dispatchEvent(new Event('nora-academic-ready'));
 
@@ -141,32 +156,35 @@ export function setupAcademicUI({ getState, save, refresh, toast }) {
     }).join('')}</div></article>`).join('');
   }
 
-  function nextDeadline(item, today) {
-    return item.deadlines.filter(d => !d.conditional && d.date >= today).map(d => d.date).sort()[0] || '9999';
-  }
-
   function renderOpportunities() {
     const academic = normalizeAcademic(getState().academic), today = todayKey();
     const text = filters.text.trim().toLocaleLowerCase('ar');
-    const visible = OPPORTUNITIES.filter(o => (!filters.city || o.city === filters.city) && (!filters.category || o.category === filters.category)
-      && (!filters.saved || Boolean(academic.opportunityProgress[o.id])) && (filters.timing === 'all' || (filters.timing === 'upcoming' ? o.end >= today : nextDeadline(o, today) !== '9999'))
+    const visible = OPPORTUNITIES.filter(o => filters.view !== 'resources' && matchesInstitution(o, filters.institution) && (!filters.city || o.city === filters.city) && (!filters.category || o.category === filters.category)
+      && (!filters.saved || Boolean(academic.opportunityProgress[o.id])) && (filters.timing === 'all' || (filters.timing === 'upcoming' ? o.end >= today : nextOpportunityDeadline(o, today) !== '9999'))
       && (!text || `${o.title} ${o.organizer} ${o.city} ${o.fit} ${o.participation}`.toLocaleLowerCase('ar').includes(text)))
-      .sort((a, b) => nextDeadline(a, today).localeCompare(nextDeadline(b, today)) || a.start.localeCompare(b.start));
-    document.getElementById('opportunityResultCount').textContent = `${visible.length} فرصة`;
+      .sort((a, b) => nextOpportunityDeadline(a, today).localeCompare(nextOpportunityDeadline(b, today)) || a.start.localeCompare(b.start));
+    const resources = UNIVERSITY_RESOURCES.filter(o => filters.view !== 'events' && filters.timing !== 'deadline' && !filters.saved && matchesInstitution(o, filters.institution)
+      && (!filters.city || o.city === filters.city) && (!filters.category || o.category === filters.category)
+      && (!text || `${o.title} ${o.organizer} ${o.city} ${o.description}`.toLocaleLowerCase('ar').includes(text)));
+    document.getElementById('opportunityResultCount').textContent = `الفعاليات: ${visible.length} · المصادر والمراكز: ${resources.length}`;
+    document.getElementById('opportunityCards').hidden = filters.view === 'resources';
+    document.getElementById('universityResourceSection').hidden = !resources.length;
+    document.getElementById('universityResourceCards').innerHTML = resources.map(o => `<article class="academic-opportunity academic-resource" data-university-resource="${o.id}"><div class="academic-card-tags"><span>${esc(o.city)} · ${esc(o.institutionType)}</span><span>مصدر أو برنامج جامعي</span></div><h3>${esc(o.title)}</h3><p class="academic-organizer">${esc(o.organizer)}</p><span class="academic-deadline-badge">${esc(o.availability)}</span><p class="academic-fit">${esc(o.description)}</p><p class="academic-caution">${esc(o.caution)}</p>${o.contact ? `<p class="academic-resource-contact">للاستفسار: <a href="mailto:${esc(o.contact)}"><bdi dir="ltr">${esc(o.contact)}</bdi></a></p>` : ''}<div class="academic-source-links"><a href="${esc(o.source)}" target="_blank" rel="noopener">صفحة الجهة ↗</a></div><p class="academic-card-note">آخر تحقق: <bdi>${dateText(o.verifiedAt)}</bdi></p></article>`).join('');
     document.getElementById('opportunityCards').innerHTML = visible.length ? visible.map(o => {
-      const next = nextDeadline(o, today), ended = o.end < today;
+      const next = nextOpportunityDeadline(o, today), ended = o.end < today;
       const status = academic.opportunityProgress[o.id] || '';
-      const badge = ended ? 'انتهت الفعالية' : next !== '9999' ? 'موعد تقديم قادم' : o.deadlines.some(d => !d.conditional) ? 'انقضى موعد التقديم المعلن' : 'موعد التقديم غير معلن';
+      const badge = ended ? 'انتهت الفعالية' : o.availability || (next !== '9999' ? 'موعد تقديم قادم' : o.deadlines.some(d => !d.conditional) ? 'انقضى موعد التقديم المعلن' : 'موعد التقديم غير معلن');
       const linked = getState().events.some(e => e.opportunityId === o.id) || getState().tasks.some(t => t.opportunityId === o.id);
-      return `<article class="academic-opportunity" data-opportunity="${o.id}"><div class="academic-card-tags"><span>${o.city} · ${o.country}</span><span class="academic-category-${o.category}">${CATEGORIES[o.category]}</span></div>
+      return `<article class="academic-opportunity" data-opportunity="${o.id}"><div class="academic-card-tags"><span>${o.city} · ${o.country}</span>${o.institutionType ? `<span>${esc(o.institutionType)}</span>` : ''}<span class="academic-category-${o.category}">${CATEGORIES[o.category]}</span></div>
       <h3>${esc(o.title)}</h3><p class="academic-organizer">${esc(o.organizer)}</p><div class="academic-event-date"><span>${esc(o.format)}</span><strong>${dateText(o.start)}${o.end !== o.start ? ` — ${dateText(o.end)}` : ''}</strong></div>
       <div class="academic-deadlines"><span class="academic-deadline-badge ${next !== '9999' ? 'is-open' : ''}">${badge}</span>${o.deadlines.length ? `<ul>${o.deadlines.map(d => `<li class="${d.date < today ? 'is-past' : ''}"><span>${esc(d.label)}${d.conditional ? ' · بعد القبول' : ''}</span><bdi>${dateText(d.date)}</bdi></li>`).join('')}</ul>` : '<p>راجعي الجهة لتأكيد فتح التسجيل وموعد إغلاقه.</p>'}</div>
       <p class="academic-fit"><strong>مجالات الاستفادة:</strong> ${esc(o.fit)}</p><p class="academic-fee"><strong>التكلفة:</strong> ${esc(o.fee)}</p>
       <details class="academic-opportunity-details"><summary>الشروط وملاحظات التقديم</summary><p>${esc(o.participation)}</p><p class="academic-caution">${esc(o.caution)}</p></details>
-      <div class="academic-source-links"><a href="${esc(o.source)}" target="_blank" rel="noopener">المصدر الرسمي ↗</a>${o.secondSource ? `<a href="${esc(o.secondSource)}" target="_blank" rel="noopener">تفاصيل إضافية ↗</a>` : ''}</div>
+      <div class="academic-source-links"><a href="${esc(o.source)}" target="_blank" rel="noopener">المصدر الرسمي ↗</a>${o.secondSource ? `<a href="${esc(o.secondSource)}" target="_blank" rel="noopener">تفاصيل إضافية ↗</a>` : ''}${(o.additionalSources || []).map(s => `<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.label)} ↗</a>`).join('')}</div>
       <div class="academic-card-actions"><div class="field"><label for="participation-${o.id}">حالة مشاركتي</label><select id="participation-${o.id}" data-participation="${o.id}">${PARTICIPATION_STATUSES.map(s => `<option value="${s}" ${s === status ? 'selected' : ''}>${s || 'لم أحدد بعد'}</option>`).join('')}</select></div><button type="button" class="btn btn-soft btn-small" data-add-opportunity="${o.id}" ${ended ? 'disabled' : ''}>${linked ? 'استكمال المواعيد والمهام' : 'إضافة المواعيد ومهمة التحضير'}</button></div>
       <p class="academic-card-note">تُضاف المواعيد القادمة فقط؛ النسخة النهائية المشروطة تُضاف بعد اختيار «مقبولة». آخر تحقق: <bdi>${dateText(o.verifiedAt)}</bdi>.</p></article>`;
-    }).join('') : '<div class="empty-state">لا توجد فرص تطابق هذه الخيارات. غيّري المدينة أو النوع أو الفترة.</div>';
+    }).join('') : resources.length ? '' : '<div class="empty-state">لا توجد نتائج تطابق هذه الخيارات. غيّري الجهة أو المدينة أو النوع أو الفترة.</div>';
+    if (!visible.length && !resources.length) document.getElementById('opportunityCards').hidden = false;
   }
 
   plan.addEventListener('change', event => {
@@ -195,6 +213,8 @@ export function setupAcademicUI({ getState, save, refresh, toast }) {
       return;
     }
     if (target.id === 'opportunityCity') filters.city = target.value;
+    else if (target.id === 'opportunityInstitution') filters.institution = target.value;
+    else if (target.id === 'opportunityView') filters.view = target.value;
     else if (target.id === 'opportunityCategory') filters.category = target.value;
     else if (target.id === 'opportunityTiming') filters.timing = target.value;
     else if (target.id === 'opportunitySaved') filters.saved = target.checked;
@@ -217,3 +237,4 @@ export function setupAcademicUI({ getState, save, refresh, toast }) {
   });
   return { render() { renderPlan(); renderOpportunities(); } };
 }
+

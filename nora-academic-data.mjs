@@ -109,7 +109,7 @@ export const OPPORTUNITIES = [
     fee: 'لم تُؤكد رسوم مشاركة؛ إجمالي الجوائز 25 ألف ريال وفق الملصق.',
     participation: 'هاكاثون ضمن المؤتمر الدولي الثاني للاستدامة وجودة الحياة، ومن مساراته التعليم والابتكار والحوكمة.',
     fit: 'تطوير أفكار في التعليم والابتكار والحوكمة تعزز الاستدامة وجودة الحياة.',
-    caution: 'موعد التسجيل والجوائز من الملصق الذي أُرسل للمساحة؛ رابط المصدر أدناه للمؤتمر. يجب مراجعة شروط الهاكاثون مباشرة، والتقديم لا يثبت القبول.',
+    caution: 'موعد التسجيل والجوائز وفق إعلان الهاكاثون المصوّر؛ رابط المصدر أدناه للمؤتمر. يجب مراجعة شروط الهاكاثون مباشرة، والتقديم لا يثبت القبول.',
     source: 'https://kau.edu.sa/faculty/en/human-sciences-design/page-legacy/International%20Conference%20on%20Sustainability%20and%20Quality%20of%20Life',
     action: 'تجهيز طلب المشاركة ونموذج أولي للفكرة المختارة وخطة لقياس الأثر'
   },
@@ -196,5 +196,115 @@ export const OPPORTUNITIES = [
     fit: 'قريب من التخصص؛ يحتاج تحديد قيمة المشاركة البحثية مقارنة بالتكلفة.',
     caution: 'لم يُعلن آخر موعد تقديم؛ القبول والدفع يتيحان كتاب المؤتمر، ولا توجد ضمانة نشر في مجلة مفهرسة. تُستخدم تواريخ موقع 2027 لا كتيب 2026 القديم.',
     source: 'https://www.educonf.sa/', action: 'مراجعة التحكيم والرسوم وموعد تقديم الورقة مع المنظم'
+  },
+  {
+    id: 'effat-learning-2027', title: 'المؤتمر الرابع والعشرون للتعلّم والتقنية',
+    organizer: 'جامعة عفت', city: 'جدة', country: 'السعودية', institutionType: 'أهلية', category: 'paper', format: 'حضوري',
+    start: '2027-02-01', end: '2027-02-02',
+    deadlines: [{ label: 'الورقة الكاملة', date: '2026-10-31' }, { label: 'النسخة النهائية', date: '2027-01-03', conditional: true }, { label: 'التسجيل المبكر', date: '2027-01-10', conditional: true }],
+    availability: 'دعوة أوراق معلنة',
+    fee: 'للطالب مقدّم الورقة: 200 ريال مبكرًا و300 لاحقًا. الحضور دون شهادة مجاني؛ شهادة حضور الطالب 50 ريالًا مبكرًا و75 لاحقًا. الرسوم تشمل الضريبة.',
+    participation: 'ورقة كاملة بحد أقصى 6 صفحات وفق قالب IEEE وتحكيم مزدوج التعمية؛ التقديم عبر EasyChair. إخطار القبول 15 ديسمبر 2026.',
+    fit: 'التحول الرقمي في التعليم العالي، حوكمة الذكاء الاصطناعي وأخلاقياته والنزاهة الأكاديمية، تقنيات التعلم المتمحورة حول الإنسان، والشمول وإتاحة التعلم.',
+    caution: 'تُراجع ملاءمة الورقة للمسار وقالبه. اعتماد الإيداع في IEEE Xplore لا يزال قيد المراجعة؛ الفهرسة ليست مضمونة. تأكيد أهلية سعر الطالب قبل الدفع.',
+    source: 'https://www.effatuniversity.edu.sa/English/conferences/LT/Pages/default.aspx',
+    secondSource: 'https://www.effatuniversity.edu.sa/English/conferences/LT/Pages/Important_Dates.aspx',
+    additionalSources: [{ label: 'الرسوم', url: 'https://www.effatuniversity.edu.sa/English/conferences/LT/Pages/Registration-and-Fees.aspx' }, { label: 'إرشادات الورقة', url: 'https://www.effatuniversity.edu.sa/English/conferences/LT/Pages/submission-guidelines.aspx' }],
+    action: 'اختيار مسار في مؤتمر التعلّم والتقنية ومراجعة الورقة مع المشرفة'
+  },
+  {
+    id: 'psau-icoet-2027', title: 'ICOET 2027 · المؤتمر الدولي للتقنيات الناشئة',
+    organizer: 'جامعة الأمير سطام بن عبدالعزيز · كلية هندسة وعلوم الحاسب', city: 'الخرج', country: 'السعودية', institutionType: 'حكومية', category: 'paper', format: 'حضوري',
+    start: '2027-03-23', end: '2027-03-24',
+    deadlines: [{ label: 'الورقة الكاملة', date: '2027-01-01' }, { label: 'النسخة النهائية', date: '2027-03-10', conditional: true }, { label: 'تسجيل المؤلفين', date: '2027-03-17', conditional: true }],
+    availability: 'دعوة معلنة؛ بوابة الإرسال لم تُعلن بعد',
+    fee: 'رسوم التسجيل لم تُعلن في الصفحة الرسمية.',
+    participation: 'أبحاث أصلية وتحكيم مزدوج التعمية؛ يشمل مسار الذكاء الاصطناعي تطبيقاته في التعليم، والتفاعل بين الإنسان والذكاء الاصطناعي. إخطار القبول 23 فبراير 2027.',
+    fit: 'بحوث تطبيقات الذكاء الاصطناعي في التعليم ودعم القرار والتفاعل البشري مع التقنيات؛ الملاءمة أقوى لبحث ذي مساهمة تقنية أو تطبيقية واضحة.',
+    caution: 'ليس مؤتمر قيادة تربوية عامًا. يجب تأكيد قبول منهج الورقة ومحورها قبل تجهيزها. بوابة التقديم لم تُعلن؛ النشر في IEEE Xplore والفهرسة في Scopus مشروطان بالموافقات وغير مضمونين.',
+    source: 'https://events.psau.edu.sa/', action: 'مراجعة ملاءمة البحث لمسار الذكاء الاصطناعي في التعليم وانتظار بوابة الإرسال'
+  },
+  {
+    id: 'effat-humanities-2027', title: 'المؤتمر الدولي الرابع للعلوم الإنسانية',
+    organizer: 'جامعة عفت · كلية العلوم الإنسانية', city: 'جدة', country: 'السعودية', institutionType: 'أهلية', category: 'paper', format: 'حضوري',
+    start: '2027-03-29', end: '2027-03-29',
+    deadlines: [{ label: 'المستخلص', date: '2026-11-15' }, { label: 'الورقة الكاملة', date: '2027-01-28', conditional: true }, { label: 'التسجيل المبكر', date: '2027-02-08', conditional: true }],
+    availability: 'دعوة بحثية معلنة؛ يلزم تأكيد الوصول للتقديم',
+    fee: 'رسوم المشاركة غير مؤكدة؛ صفحة التسجيل تتطلب تسجيل الدخول.',
+    participation: 'أوراق أصلية حول «300 عام من بناء الوطن والهوية والتراث والقيادة». إخطار قبول المستخلص 7 ديسمبر 2026.',
+    fit: 'مناسب لبحث يربط التربية أو القيادة ببناء الوطن والهوية والتحولات الاجتماعية وجودة الحياة، ضمن محاور المؤتمر الفعلية.',
+    caution: 'ليس مؤتمرًا تربويًا عامًا. بعض صفحات المواعيد والتسجيل أحالت إلى الدخول؛ المواعيد منشورة في نتائج الموقع الرسمي المفهرسة، ويجب تأكيدها مع الجامعة وإتاحة إرسال المستخلص.',
+    source: 'https://www.effatuniversity.edu.sa/English/conferences/ecoh-conf/Pages/default.aspx',
+    secondSource: 'https://www.effatuniversity.edu.sa/English/conferences/ecoh-conf/Pages/important-dates.aspx',
+    action: 'تأكيد إتاحة تقديم المستخلص وملاءمة موضوعه لمحاور العلوم الإنسانية'
+  },
+  {
+    id: 'tks-thrive-educators-2026', title: 'Thrive · مؤتمر التربويين: التعلّم بلا حدود',
+    organizer: 'مدرسة جامعة الملك عبدالله للعلوم والتقنية · معهد Thrive', city: 'ثول', country: 'السعودية', institutionType: 'مستقلة', category: 'development', format: 'حضوري',
+    start: '2026-12-05', end: '2026-12-05', deadlines: [], availability: 'تسجيل الحضور معلن في صفحة المعهد',
+    fee: 'الرسوم وموعد إغلاق التسجيل لم يُؤكدا.',
+    participation: 'مؤتمر مهني للتربويين بعنوان «التعلّم بلا حدود: بناء ثقافات الشمول والانتماء»، من 9 صباحًا إلى 4 مساءً.',
+    fit: 'القيادة المدرسية، ثقافة المؤسسة التعليمية، الشمول والانتماء، ودعم المتعلمين المتنوعين.',
+    caution: 'تأكيد أهلية طالبة الماجستير وتفاصيل الدخول إلى الحرم مع الجهة. صفحة المعهد تعلن فتح التسجيل، بينما صفحة التفاصيل ما زالت تعرض عبارة فتحه في أغسطس. لم تُثبت دعوة لنشر أوراق.',
+    source: 'https://tks.kaust.edu.sa/thriveattks/supporting-diverse-learners-conference-december-5-2026',
+    secondSource: 'https://tks.kaust.edu.sa/thriveattks', action: 'مراجعة التسجيل والأهلية لمؤتمر Thrive للتربويين'
+  },
+  {
+    id: 'kfupm-rhe-2027', title: 'RHE · إعادة تعريف التعليم العالي',
+    organizer: 'جامعة الملك فهد للبترول والمعادن · تنظيم جامعة IE', city: 'الظهران', country: 'السعودية', institutionType: 'حكومية', category: 'development', format: 'الاستضافة في السعودية؛ تفاصيل الحضور غير معلنة',
+    start: '2027-02-02', end: '2027-02-04', deadlines: [], availability: 'فعالية معلنة؛ التسجيل والأهلية غير مؤكدين',
+    fee: 'الرسوم وإجراءات التسجيل لم تُعلن في خبر الجامعة.',
+    participation: 'ملتقى قيادات الجامعات وصنّاع السياسات والمبتكرين حول مستقبل التعليم العالي والذكاء الاصطناعي والابتكار.',
+    fit: 'القيادة الجامعية، سياسات التعليم العالي، بناء مجتمع المعرفة والتحول المؤسسي.',
+    caution: 'قد يقتصر الحضور على الدعوات أو فئات قيادية؛ أهلية الطلبة غير مؤكدة. لم تُثبت دعوة أوراق. الخبر يحدد 2–4 فبراير 2027 رغم احتواء رابط الصفحة على 2026؛ يلزم تأكيد التفاصيل عند صدور برنامج التسجيل.',
+    source: 'https://news.kfupm.edu.sa/news/kfupm-to-host-global-higher-education-conference-in-2026/221/',
+    action: 'الاستفسار عن أهلية الطلبة وإتاحة الحضور في مؤتمر RHE'
+  },
+  {
+    id: 'dah-ccts-2026', title: 'CCTS 2026 · الإبداع والتقنية والاستدامة',
+    organizer: 'جامعة دار الحكمة', city: 'جدة', country: 'السعودية', institutionType: 'أهلية', category: 'development', format: 'الحضور حضوري؛ عرض الورقة عن بُعد للمؤلفين فقط',
+    start: '2026-12-09', end: '2026-12-10',
+    deadlines: [{ label: 'تقديم الأوراق · الموعد الممدد', date: '2026-09-10' }, { label: 'النسخة النهائية', date: '2026-10-15', conditional: true }, { label: 'دفع رسوم الورقة المقبولة', date: '2026-10-29', conditional: true }],
+    availability: 'الحضور متاح؛ تقديم أوراق جديدة أغلق',
+    fee: 'الحضور دون شهادة مجاني؛ مع شهادة 250 ريالًا. رسوم الورقة المقبولة 1500 ريال، تُدفع بعد القبول الرسمي.',
+    participation: 'مؤتمر للباحثين والأكاديميين والطلبة؛ يتضمن التعليم والتوعية بالاستدامة، وإدارة الاستدامة وسياساتها وأخلاقياتها.',
+    fit: 'التعليم من أجل الاستدامة، السياسات والحوكمة والأثر المجتمعي والتحول الرقمي؛ يفيد في الحضور وبناء العلاقات البحثية.',
+    caution: 'آخر موعد ممدد للأوراق كان 10 سبتمبر 2026. مواعيد أكتوبر تخص الأوراق المقبولة، ولا تفتح باب تقديم جديد. لا يتاح حضور افتراضي للجمهور.',
+    source: 'https://www.dah.edu.sa/en/research/conferences/Pages/CCTS-2026-3rd-International-Conference-on-Creativity-Technology-and-Sustainability.aspx',
+    secondSource: 'https://www.dah.edu.sa/en/research/conferences/Pages/Important-Dates-Creativity-Technology-and-Sustainability-2026.aspx',
+    additionalSources: [{ label: 'الحضور والرسوم', url: 'https://www.dah.edu.sa/en/research/conferences/Pages/Registration-and-Submission-Creativity-Technology-and-Sustainability-2026.aspx' }],
+    action: 'اختيار جلسات التعليم والاستدامة وتسجيل الحضور في مؤتمر دار الحكمة'
+  }
+].map(item => Object.freeze({ ...item, institutionType: item.institutionType || ({ 'pnu-hackathon-2026': 'حكومية', 'kau-sustainability-2026': 'حكومية' }[item.id] || ''), verifiedAt: PROGRAM.verifiedAt }));
+
+export const UNIVERSITY_RESOURCES = [
+  {
+    id: 'psu-erl', title: 'مختبر البحوث التربوية ERL', organizer: 'جامعة الأمير سلطان', city: 'الرياض', country: 'السعودية', institutionType: 'أهلية', category: 'development',
+    description: 'مختبر يدعم البحث التربوي القائم على الأدلة، ويقدم تدريبًا وإرشادًا وورشًا وندوات. تشمل مجالاته السياسات والقيادة التعليمية وضمان الجودة والأخلاقيات المهنية والتعلّم المدمج.',
+    availability: 'مركز بحثي؛ لا يوجد موعد جديد مؤكد للملتقى',
+    caution: 'أهلية الباحثة من خارج الجامعة ومواعيد البرامج والرسوم غير مؤكدة؛ تُراجع مع المختبر.',
+    source: 'https://psu.edu.sa/en/CSH/ERL', contact: 'erl@psu.edu.sa'
+  },
+  {
+    id: 'alfaisal-research-training', title: 'تدريب مهارات البحث والكتابة والتحليل', organizer: 'جامعة الفيصل · مركز الأمير خالد الفيصل للبحوث والدراسات الاستشارية', city: 'الرياض', country: 'السعودية', institutionType: 'أهلية', category: 'development',
+    description: 'كتالوج التدريب يذكر البحث العلمي، والكتابة الأكاديمية والتقنية، والتفكير النقدي، ومقدمة في SPSS؛ وهي مهارات تدعم إعداد الرسالة والبحوث.',
+    availability: 'كتالوج برامج؛ الدفعات والمواعيد والرسوم تحتاج تأكيدًا',
+    caution: 'وجود اسم الدورة في الكتالوج لا يثبت فتح دفعة حاليًا. يُطلب جدول الدورات وأهلية الطلبة الخارجيين وطريقة التدريب قبل التسجيل.',
+    source: 'https://center.alfaisal.edu/training', contact: 'center@alfaisal.edu'
+  },
+  {
+    id: 'ksu-teaching-excellence', title: 'مركز التميز في التعلّم والتعليم', organizer: 'جامعة الملك سعود', city: 'الرياض', country: 'السعودية', institutionType: 'حكومية', category: 'development',
+    description: 'مصادر ودراسات وتقارير عن السياسات والخطط الاستراتيجية للتعليم الجامعي، تقويم البرامج ومخرجات التعلّم، والممارسات التعليمية والتقييم.',
+    availability: 'مصادر جامعية متاحة للاطلاع',
+    caution: 'بعض البرامج موجه لأعضاء هيئة التدريس ومنسوبي الجامعة؛ لم يُثبت فتحها لطالبة خارجية. المؤتمرات المدرجة في دليل المركز ليست كلها من تنظيم الجامعة.',
+    source: 'https://celt.ksu.edu.sa/ar'
+  },
+  {
+    id: 'tks-thrive-programs', title: 'Thrive · ورش وزيارات للتطوير التربوي', organizer: 'مدرسة جامعة الملك عبدالله للعلوم والتقنية', city: 'ثول', country: 'السعودية', institutionType: 'مستقلة', category: 'development',
+    description: 'ورش تربوية لمدة ساعتين، وزيارات دراسية لمدة خمس ساعات تشمل حوارًا مع قيادة المدرسة وزيارات للفصول؛ تعلن الجهة توفير ترجمة عربية.',
+    availability: 'برامج مهنية؛ موعد الزيارة أو الورشة بالتنسيق مع الجهة',
+    caution: 'تُؤكد أهلية الطالبة والرسوم ومتطلبات الدخول للحرم. الزيارة المهنية لا تمنح تلقائيًا إذن جمع بيانات بحثية أو موافقة أخلاقية.',
+    source: 'https://tks.kaust.edu.sa/thriveattks', contact: 'Thriveconnect@thekaustschool.org'
   }
 ].map(item => Object.freeze({ ...item, verifiedAt: PROGRAM.verifiedAt }));
+

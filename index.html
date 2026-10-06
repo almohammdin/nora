@@ -1874,7 +1874,7 @@ body{padding-top:var(--nora-ribbon-height);max-width:100%;overflow-x:hidden}
 @media print{body{padding-top:0}.nora-ribbon{display:none!important}}
 </style>
 <link rel="stylesheet" href="./nora-ui-v3.css?v=3.0.5"/>
-<link rel="stylesheet" href="./nora-academic.css?v=1"/>
+<link rel="stylesheet" href="./nora-academic.css?v=2"/>
 </head>
 <body class="access-locked">
 <div class="nora-ribbon" aria-hidden="true"></div>
@@ -2427,7 +2427,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/fireba
 import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
 import { getDatabase, ref, onValue, set, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-database.js";
 import { getAI, getGenerativeModel, GoogleAIBackend } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-ai.js";
-import { normalizeAcademic, setupAcademicUI, academicContext, allDayRange, allDayIcs } from "./nora-academic.mjs?v=2";
+import { normalizeAcademic, setupAcademicUI, academicContext, allDayRange, allDayIcs } from "./nora-academic.mjs?v=3";
 
 const firebaseConfig = {
  apiKey: "AIzaSyAiLZh1SaB4bwk5kCdAulB_c96b5xcXCN4",
@@ -3549,3 +3549,4 @@ window.addEventListener("offline",()=>setSyncStatus("error","دون اتصال")
 </script><script src="./nora-ui-v3.js?v=3.0.3" defer></script>
 </body>
 </html>
+
