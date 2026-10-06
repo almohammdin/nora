@@ -40,6 +40,7 @@
 .academic-document a,.academic-source-links a{color:#7b4c6b;text-decoration:underline;text-underline-offset:3px;font-size:.82rem}
 .academic-verification{font-size:.75rem;color:#826b7c;background:#f3e8ef;padding:8px 12px;border-radius:99px;white-space:nowrap}
 .academic-filters{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:16px}
+.academic-intro-actions{display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-end}
 .academic-filters .field{margin:0!important}
 .academic-filters label{font-size:.8rem}
 .academic-saved-filter{grid-column:1/-1;display:flex;gap:9px;align-items:center;color:#68526a}
