@@ -46,6 +46,19 @@ export const ELECTIVES = [
 // A curated snapshot, not a live registration feed. Unknown costs and deadlines stay unknown.
 export const OPPORTUNITIES = [
   {
+    id: 'edu-npo-forum-2026', title: 'ملتقى القطاع غير الربحي في التعليم والتدريب 2026',
+    organizer: 'وزارة التعليم', city: 'الرياض', country: 'السعودية', category: 'development', format: 'حضوري',
+    start: '2026-10-20', end: '2026-10-21', deadlines: [],
+    availability: 'التسجيل معلن في إعلان وزارة التعليم', verifiedAt: '2026-10-09',
+    fee: 'رسوم الحضور غير مذكورة في الإعلان.',
+    participation: 'النسخة الثالثة، برعاية وزير التعليم وتحت شعار «جودة تعظم الأثر»، في جامعة الأميرة نورة بنت عبدالرحمن بالرياض. التسجيل عبر موقع الملتقى.',
+    fit: 'جودة المبادرات التعليمية وقياس أثرها وبناء الشراكات المستدامة في التعليم والتدريب؛ موضوعات مرتبطة بالقيادة التعليمية والجودة والحوكمة.',
+    caution: 'موعد إغلاق التسجيل وأوقات الجلسات وشروط الحضور غير مذكورة في الإعلان؛ تراجع في موقع الملتقى.',
+    source: 'https://lnkd.in/p/eBuctPFg',
+    additionalSources: [{ label: 'التسجيل في الملتقى', url: 'https://edu-npo.net/' }],
+    action: 'مراجعة برنامج الملتقى والتسجيل واختيار جلسات الجودة وقياس الأثر والشراكات'
+  },
+  {
     id: 'buid-leadership-2026', title: 'المؤتمر الدولي للإدارة والقيادة التعليمية',
     organizer: 'الجامعة البريطانية في دبي', city: 'دبي', country: 'الإمارات', category: 'paper', format: 'حضوري وهجين',
     start: '2026-11-07', end: '2026-11-07',
@@ -275,7 +288,7 @@ export const OPPORTUNITIES = [
     additionalSources: [{ label: 'الحضور والرسوم', url: 'https://www.dah.edu.sa/en/research/conferences/Pages/Registration-and-Submission-Creativity-Technology-and-Sustainability-2026.aspx' }],
     action: 'اختيار جلسات التعليم والاستدامة وتسجيل الحضور في مؤتمر دار الحكمة'
   }
-].map(item => Object.freeze({ ...item, institutionType: item.institutionType || ({ 'pnu-hackathon-2026': 'حكومية', 'kau-sustainability-2026': 'حكومية' }[item.id] || ''), verifiedAt: PROGRAM.verifiedAt }));
+].map(item => Object.freeze({ ...item, institutionType: item.institutionType || ({ 'pnu-hackathon-2026': 'حكومية', 'kau-sustainability-2026': 'حكومية' }[item.id] || ''), verifiedAt: item.verifiedAt || PROGRAM.verifiedAt }));
 
 export const UNIVERSITY_RESOURCES = [
   {
